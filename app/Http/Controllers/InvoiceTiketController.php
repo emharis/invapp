@@ -293,10 +293,35 @@ class InvoiceTiketController extends Controller
 	}
 
 	public function cetakTiket($invoice_id){
+		$data_invoice = \DB::table('invoice_tiket')->find($invoice_id);
+		$data_pemesanan = \DB::table('invoice_tiket_data_pemesanan')
+							->where('invoice_tiket_id',$invoice_id)
+							->get();
+		// $data_penumpang = \DB::table('invoice_tiket_data_penumpang')
+		// 					->where('invoic_data',$invoice_id)
+		// 					->get();
+
+
 		\Fpdf::AddPage();
-	    \Fpdf::SetFont('Courier', 'B', 18);
-	    \Fpdf::Cell(50, 25, 'Hello World!');
+		\Fpdf::setMargins(0,0,0);
 	    
+		// generate header
+
+	    \Fpdf::SetFont('Arial', null, 10);
+	    \Fpdf::Cell(50, 0,null,0,0,'L',false );
+	    \Fpdf::Cell(50, 0,'Telepon',0,0,'L',false );
+	    \Fpdf::Cell(50, 0,'E-Mail',0,0,'L',false );
+	    \Fpdf::Cell(50, 0,'Alamat',0,0,'L',false );
+	    \Fpdf::Ln();
+	    \Fpdf::Ln();
+	    \Fpdf::SetFont('Arial', null, 8);
+	    \Fpdf::Cell(50, 0,null,0,0,'L',false );
+	    \Fpdf::Cell(50, 0,'081-357-359-019',0,0,'L',false );
+	    \Fpdf::Cell(50, 0,'butirpadi@outlook.com',0,0,'L',false );
+	    \Fpdf::Cell(50, 0,'Ngaban RT 5 RW 2 Tanggulangin',0,0,'L',false );
+
+	    // \Fpdf::image('img/logo-aksara.png',5,5,50);
+					    
 
 	    \Fpdf::Output('I','test.pdf',false);
 	    exit;
