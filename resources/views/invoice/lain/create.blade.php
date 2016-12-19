@@ -301,6 +301,13 @@
 
 <script type="text/javascript">
 (function ($) {
+    $('textarea').bind('keypress', function(e) {
+      if ((e.keyCode || e.which) == 13) {
+        $(this).parents('form').submit();
+        return false;
+      }
+    });
+    
     // SET DATEPICKER
     $('.input-tanggal').datepicker({
         format: 'dd-mm-yyyy',
@@ -504,7 +511,7 @@
         var inv_data_pemesanan = JSON.parse('{"data" : [] }');
 
         $('#row-item-group').find('.row-item').each(function(){
-            var keterangan = $(this).find('input[name=keterangan]').val();     
+            var keterangan = $(this).find('textarea[name=keterangan]').val();     
             var harga_satuan = $(this).find('input[name=harga_satuan]').autoNumeric('get');    
             var jumlah = $(this).find('input[name=jumlah]').val();    
             var total_harga = $(this).find('input[name=total_harga]').autoNumeric('get');

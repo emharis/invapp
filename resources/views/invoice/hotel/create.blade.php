@@ -255,7 +255,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-5" >
-                                <input autocomplete="off" required type="text" placeholder="Nama" class="form-control " name="nama" value="" >
+                                <input autocomplete="off" required type="text" placeholder="Nama Tamu" class="form-control " name="nama" value="" >
                             </div>
                             <div class="col-sm-5" >
                                 <div class="input-group" >
@@ -394,7 +394,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-5" >
-                                <input autocomplete="off" required type="text" placeholder="Nama" class="form-control " name="nama" value="" >
+                                <input autocomplete="off" required type="text" placeholder="Nama Tamu" class="form-control " name="nama" value="" >
                             </div>
                             <div class="col-sm-5" >
                                 <div class="input-group" >
@@ -441,6 +441,13 @@
 
 <script type="text/javascript">
 (function ($) {
+    $('textarea').bind('keypress', function(e) {
+      if ((e.keyCode || e.which) == 13) {
+        $(this).parents('form').submit();
+        return false;
+      }
+    });
+    
     // SET DATEPICKER
     $('.input-tanggal').datepicker({
         format: 'dd-mm-yyyy',

@@ -151,21 +151,21 @@
                         <!-- text input -->
                         <div class="form-group">
                           <label>Nama*</label>
-                          <input autocomplete="off" required type="text" class="form-control" placeholder="Nama" name="nama" autofocus>
+                          <input autocomplete="off" required type="text" class="form-control" placeholder="Nama" name="nama" autofocus maxlength="{{$maxlen_data_kustomer}}" >
                         </div>
                         <div class="form-group">
                           <label>Kantor/Perusahaan</label>
-                          <input autocomplete="off" type="text" class="form-control" placeholder="Kantor/Perusahaan" name="kantor">
+                          <input autocomplete="off" type="text" class="form-control" placeholder="Kantor/Perusahaan" name="kantor" maxlength="{{$maxlen_data_kustomer}}" >
                         </div>
 
                         <!-- textarea -->
                         <div class="form-group">
                           <label>Telepon/HP*</label>
-                          <input autocomplete="off" required type="text" class="form-control" placeholder="Telepon/HP" name="telp">
+                          <input autocomplete="off" required type="text" class="form-control" placeholder="Telepon/HP" name="telp" maxlength="{{$maxlen_data_kustomer}}" >
                         </div>
                         <div class="form-group">
                           <label>E-Mail</label>
-                          <input autocomplete="off" type="email" class="form-control" placeholder="E-Mail" name="email">
+                          <input autocomplete="off" type="email" class="form-control" placeholder="E-Mail" name="email" maxlength="{{$maxlen_data_kustomer}}" >
                         </div>
                     </div>
                 </div>
@@ -174,7 +174,7 @@
                         <!-- text input -->
                         <div class="form-group">
                           <label>Alamat</label>
-                          <textarea name="alamat" class="form-control" rows="4" placeholder="Alamat" style="resize:none;height: 109px;" ></textarea>
+                          <textarea name="alamat" class="form-control" rows="4" placeholder="Alamat" style="resize:none;height: 109px;" maxlength="{{$maxlen_data_kustomer}}" ></textarea>
                         </div>
                         <div class="form-group">
                           <label>Tanggal Cetak*</label>
@@ -207,7 +207,7 @@
                         <!-- text input -->
                         <div class="form-group">
                           <label>Kode Pemesanan*</label>
-                          <input autocomplete="off" required type="text" name="kode_pemesanan" class="form-control" placeholder="Kode Pemesanan"> 
+                          <input autocomplete="off" required type="text" name="kode_pemesanan" class="form-control" placeholder="Kode Pemesanan" maxlength="{{$maxlen_kode_pemesaan*2}}"> 
                         </div>
                     </div>
                 </div>
@@ -216,13 +216,7 @@
                         <!-- text input -->
                         <div class="form-group">
                           <label>Maskapai*</label>
-                          {{-- <div class="input-group" >
-                            <input autocomplete="off" required type="text" name="maskapai" class="form-control input-maskapai" placeholder="Maskapai"> 
-                            <div class="input-group-addon"  >
-                                <a class="btn-reset-maskapai" ><i class="fa fa-history" ></i></a>
-                            </div>
-                          </div> --}}
-                          <input autocomplete="off" required type="text" name="maskapai" class="form-control input-maskapai" placeholder="Maskapai"> 
+                          <input autocomplete="off" required type="text" name="maskapai" class="form-control input-maskapai" placeholder="Maskapai" maxlength="{{$maxlen_maskapai*2}}" > 
                         </div>
                     </div>
                 </div>
@@ -233,10 +227,10 @@
                           <label>Rute*</label>
                           <div class="row" >
                               <div class="col-sm-6 col-md-6 col-lg-6" >
-                                  <input autocomplete="off" required type="text" name="pergi" class="form-control" placeholder="Pergi" style="margin-bottom: 5px;" >
+                                  <input autocomplete="off" required type="text" name="pergi" class="form-control" placeholder="Pergi" style="margin-bottom: 5px;" maxlength="{{$maxlen_rute}}" >
                               </div>
                               <div class="col-sm-6 col-md-6 col-lg-6" >
-                                  <input autocomplete="off" type="text" name="pulang" class="form-control" placeholder="Pulang">
+                                  <input autocomplete="off" type="text" name="pulang" class="form-control" placeholder="Pulang" maxlength="{{$maxlen_rute}}" >
                               </div>
                           </div>
                         </div>
@@ -255,13 +249,12 @@
                                 </select>
                             </div>
                             <div class="col-sm-5" >
-                                <input autocomplete="off" required type="text" placeholder="Nama" class="form-control " name="nama" value="" >
+                                <input autocomplete="off" required type="text" placeholder="Nama Penumpang" class="form-control " name="nama" value="" maxlength="{{$maxlen_nama_penumpang*2}}" >
                             </div>
                             <div class="col-sm-5" >
                                 <div class="input-group" >
-                                <input autocomplete="off" required type="text" placeholder="Nomor Tiket" class="form-control " name="nomor_tiket" >
+                                <input autocomplete="off" required type="text" placeholder="Nomor Tiket" class="form-control " name="nomor_tiket" maxlength="{{$maxlen_nomor_tiket*2}}" >
                                     <div class="input-group-addon"  >
-                                        <!-- <a href="#" class="btn-reset-penumpang" ><i class="fa fa-history" ></i></a> -->
                                         <a href="#" class="btn-add-penumpang" style="color: #00A65A;" ><i class="fa fa-plus-circle" ></i></a>
                                     </div>
                                 </div>
@@ -295,6 +288,7 @@
                 <div class="col-sm-12 col-md-12 col-lg-6 btn-action-group"" >
                     <a class="btn btn-success" id="btn-add-pemesanan" ><i class="fa fa-plus-circle" ></i> Data Pemesanan</a>
                     <button id="btn-save" type="submit" class="btn btn-primary " ><i class="fa fa-save" ></i> Simpan</button>
+                    {{-- <a id="btn-save-print"  class="btn btn-warning " ><i class="fa fa-print" ></i> Simpan & Cetak</a> --}}
                     <a id="btn-cancel" href="invoice/tiket" class="btn btn-danger" ><i class="fa fa-close" ></i> Batal</a>
                 </div>
                 
@@ -355,13 +349,7 @@
                         <!-- text input -->
                         <div class="form-group">
                           <label>Maskapai*</label>
-                          {{-- <div class="input-group" >
-                            <input autocomplete="off" required type="text" name="maskapai" class="form-control input-maskapai" placeholder="Maskapai"> 
-                            <div class="input-group-addon"  >
-                                <a class="btn-reset-maskapai" ><i class="fa fa-history" ></i></a>
-                            </div>
-                          </div> --}}
-                          <input autocomplete="off" required type="text" name="maskapai" class="form-control input-maskapai" placeholder="Maskapai">
+                          <input autocomplete="off" required type="text" name="maskapai" class="form-control input-maskapai" placeholder="Maskapai" maxlength="28" >
                         </div>
                     </div>
                 </div>
@@ -372,10 +360,10 @@
                           <label>Rute*</label>
                           <div class="row" >
                               <div class="col-sm-6 col-md-6 col-lg-6" >
-                                  <input autocomplete="off" required type="text" name="pergi" class="form-control" placeholder="Pergi" style="margin-bottom: 5px;" >
+                                  <input autocomplete="off" required type="text" name="pergi" class="form-control" placeholder="Pergi" style="margin-bottom: 5px;" maxlength="8" >
                               </div>
                               <div class="col-sm-6 col-md-6 col-lg-6" >
-                                  <input autocomplete="off" type="text" name="pulang" class="form-control" placeholder="Pulang">
+                                  <input autocomplete="off" type="text" name="pulang" class="form-control" placeholder="Pulang" maxlength="8" >
                               </div>
                           </div>
                         </div>
@@ -394,11 +382,11 @@
                                 </select>
                             </div>
                             <div class="col-sm-5" >
-                                <input autocomplete="off" required type="text" placeholder="Nama" class="form-control " name="nama" value="" >
+                                <input autocomplete="off" required type="text" placeholder="Nama Penumpang" class="form-control " name="nama" value="" maxlength="40" >
                             </div>
                             <div class="col-sm-5" >
                                 <div class="input-group" >
-                                <input autocomplete="off" required type="text" placeholder="Nomor Tiket" class="form-control " name="nomor_tiket" >
+                                <input autocomplete="off" required type="text" placeholder="Nomor Tiket" class="form-control " name="nomor_tiket" maxlength="32" >
                                     <div class="input-group-addon"  >
                                         <!-- <a href="#" class="btn-reset-penumpang" ><i class="fa fa-history" ></i></a> -->
                                         <a href="#" class="btn-add-penumpang" style="color: #00A65A;" ><i class="fa fa-plus-circle" ></i></a>
@@ -440,6 +428,13 @@
 
 <script type="text/javascript">
 (function ($) {
+    $('textarea').bind('keypress', function(e) {
+      if ((e.keyCode || e.which) == 13) {
+        $(this).parents('form').submit();
+        return false;
+      }
+    });
+    
     // SET DATEPICKER
     $('.input-tanggal').datepicker({
         format: 'dd-mm-yyyy',
@@ -778,10 +773,27 @@
 
         if(can_save){
             $('#btn-save').attr('disabled','disabled');
-            var newform = $('<form>').attr('method','POST').attr('action','invoice/tiket/insert');
+
+            if(is_cetak){
+                // dengan cetak
+                $.post('invoice/tiket/insert',{
+                    'inv_master' : JSON.stringify(inv_master),
+                    'inv_tiket' : JSON.stringify(inv_tiket),
+                    'is_cetak' : true
+                },function(res){
+                    // alert(res);
+                    window.open('invoice/tiket/cetak-tiket/'+res, '_blank');
+                    location.href = "invoice/tiket";
+                });
+            }else{
+                // tanpa cetak
+                var newform = $('<form>').attr('method','POST').attr('action','invoice/tiket/insert');
                 newform.append($('<input autocomplete="off">').attr('type','hidden').attr('name','inv_master').val(JSON.stringify(inv_master)));
                 newform.append($('<input autocomplete="off">').attr('type','hidden').attr('name','inv_tiket').val(JSON.stringify(inv_tiket)));
-                newform.submit();
+                newform.submit();    
+            }
+
+            
                 // alert('submitting');
         }else{
             alert('Lengkapi data yang kosong.');
@@ -991,6 +1003,15 @@
     });
     // ------------------ END REMOVE FORM PEMESANAN ----------------------
 
+
+    var is_cetak = false;
+    // -------------- SIMPAN & CETAK ---------------------------------
+    $('#btn-save-print').click(function(){
+        is_cetak =true;
+        $('#form_invoice').submit();
+        return false;
+    })
+    // ----------------------------------------------------------------
 
 
 })(jQuery);

@@ -46,4 +46,10 @@ class ApiController extends Controller
 		return json_encode($data_res);	
 	}
 
+	public function getAutoCompleteLain(Request $req){
+		$data = \DB::select('select distinct(keterangan) as value, keterangan as data from invoice_lain_detail where keterangan like "%'.$req->get('nama').'%"');
+		$data_res = ['query'=>'Unit','suggestions' => $data];
+		return json_encode($data_res);	
+	}
+
 }

@@ -107,7 +107,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        <a href="invoice/tiket" >Invoice Tiket Pesawat</a> <i class="fa fa-angle-double-right" ></i> New
+        <a href="invoice/tiket" >Invoice Tiket Pesawat</a> <i class="fa fa-angle-double-right" ></i> {{$data->inv_num}}
     </h1>
 </section>
 
@@ -148,21 +148,21 @@
                         <!-- text input -->
                         <div class="form-group">
                           <label>Nama*</label>
-                          <input autocomplete="off" required type="text" class="form-control" placeholder="Nama" name="nama" value="{{$data->nama}}" autofocus>
+                          <input autocomplete="off" required type="text" class="form-control" placeholder="Nama" name="nama" value="{{$data->nama}}" autofocus maxlength="{{$maxlen_data_kustomer}}">
                         </div>
                         <div class="form-group">
                           <label>Kantor/Perusahaan</label>
-                          <input autocomplete="off" type="text" class="form-control" placeholder="Kantor/Perusahaan" name="kantor" value="{{$data->kantor}}" >
+                          <input autocomplete="off" type="text" class="form-control" placeholder="Kantor/Perusahaan" name="kantor" value="{{$data->kantor}}" maxlength="{{$maxlen_data_kustomer}}">
                         </div>
 
                         <!-- textarea -->
                         <div class="form-group">
                           <label>Telepon/HP*</label>
-                          <input autocomplete="off" required type="text" class="form-control" placeholder="Telepon/HP" name="telp" value="{{$data->telp}}" >
+                          <input autocomplete="off" required type="text" class="form-control" placeholder="Telepon/HP" name="telp" value="{{$data->telp}}" maxlength="{{$maxlen_data_kustomer}}">
                         </div>
                         <div class="form-group">
                           <label>E-Mail</label>
-                          <input autocomplete="off" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{$data->email}}" >
+                          <input autocomplete="off" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{$data->email}}" maxlength="{{$maxlen_data_kustomer}}">
                         </div>
                     </div>
                 </div>
@@ -171,7 +171,7 @@
                         <!-- text input -->
                         <div class="form-group">
                           <label>Alamat</label>
-                          <textarea name="alamat" class="form-control" rows="4" placeholder="Alamat" style="resize:none;height: 109px;" >{{$data->alamat}}</textarea>
+                          <textarea name="alamat" class="form-control" rows="4" placeholder="Alamat" style="resize:none;height: 109px;" maxlength="{{$maxlen_data_kustomer}}">{{$data->alamat}}</textarea>
                         </div>
                         <div class="form-group">
                           <label>Tanggal Cetak*</label>
@@ -207,7 +207,7 @@
                         <!-- text input -->
                         <div class="form-group">
                           <label>Kode Pemesanan*</label>
-                          <input autocomplete="off" required type="text" name="kode_pemesanan" class="form-control" placeholder="Kode Pemesanan" value="{{$dps->kode_pemesanan}}"> 
+                          <input autocomplete="off" required type="text" name="kode_pemesanan" class="form-control" placeholder="Kode Pemesanan" value="{{$dps->kode_pemesanan}}" maxlength="{{$maxlen_kode_pemesaan*2}}"> 
                         </div>
                     </div>
                 </div>
@@ -216,13 +216,8 @@
                         <!-- text input -->
                         <div class="form-group">
                           <label>Maskapai*</label>
-                          {{-- <div class="input-group" >
-                            <input autocomplete="off" required type="text" name="maskapai" class="form-control input-maskapai" placeholder="Maskapai" value="{{$dps->maskapai}}" data-maskapaiid="{{$dps->maskapai_id}}" readonly> 
-                            <div class="input-group-addon"  >
-                                <a class="btn-reset-maskapai" ><i class="fa fa-history" ></i></a>
-                            </div>
-                          </div> --}}
-                            <input autocomplete="off" required type="text" name="maskapai" class="form-control input-maskapai" placeholder="Maskapai" value="{{$dps->maskapai}}" data-maskapaiid="{{$dps->maskapai_id}}" > 
+                         
+                            <input autocomplete="off" required type="text" name="maskapai" class="form-control input-maskapai" placeholder="Maskapai" value="{{$dps->maskapai}}" data-maskapaiid="{{$dps->maskapai_id}}" maxlength="{{$maxlen_maskapai*2}}" > 
 
                         </div>
                     </div>
@@ -234,10 +229,10 @@
                           <label>Rute*</label>
                           <div class="row" >
                               <div class="col-sm-6 col-md-6 col-lg-6" >
-                                  <input autocomplete="off" required type="text" name="pergi" class="form-control" placeholder="Pergi" style="margin-bottom: 5px;" value="{{$dps->pergi}}" >
+                                  <input autocomplete="off" required type="text" name="pergi" class="form-control" placeholder="Pergi" style="margin-bottom: 5px;" value="{{$dps->pergi}}" maxlength="{{$maxlen_rute}}" >
                               </div>
                               <div class="col-sm-6 col-md-6 col-lg-6" >
-                                  <input autocomplete="off" type="text" name="pulang" class="form-control" placeholder="Pulang" value="{{$dps->pulang}}" >
+                                  <input autocomplete="off" type="text" name="pulang" class="form-control" placeholder="Pulang" value="{{$dps->pulang}}" maxlength="{{$maxlen_rute}}" >
                               </div>
                           </div>
                         </div>
@@ -259,11 +254,11 @@
                                 </select>
                             </div>
                             <div class="col-sm-5" >
-                                <input autocomplete="off" required type="text" placeholder="Nama" class="form-control " name="nama" value="{{$dpn->nama}}" >
+                                <input autocomplete="off" required type="text" placeholder="Nama Penumpang" class="form-control " name="nama" value="{{$dpn->nama}}" maxlength="{{$maxlen_nama_penumpang*2}}" >
                             </div>
                             <div class="col-sm-5" >
                                 <div class="input-group" >
-                                <input autocomplete="off" required type="text" placeholder="Nomor Tiket" class="form-control " name="nomor_tiket" value="{{$dpn->nomor_tiket}}" >
+                                <input autocomplete="off" required type="text" placeholder="Nomor Tiket" class="form-control " name="nomor_tiket" value="{{$dpn->nomor_tiket}}" maxlength="{{$maxlen_nomor_tiket*2}}" >
                                     <div class="input-group-addon"  >
                                         @if($dpn_idx == 1)
                                             <a href="#" class="btn-add-penumpang" style="color: #00A65A;" ><i class="fa fa-plus-circle" ></i></a>
@@ -308,7 +303,17 @@
                 <div class="col-sm-12 col-md-12 col-lg-6 btn-action-group"" >
                     <a class="btn btn-success" id="btn-add-pemesanan" ><i class="fa fa-plus-circle" ></i> Data Pemesanan</a>
                     <button id="btn-save" type="submit" class="btn btn-primary " ><i class="fa fa-save" ></i> Simpan</button>
-                    <a class="btn btn-warning" id="btn-cetak" target="_blank" href="invoice/tiket/cetak-tiket/{{$data->id}}"  ><i class="fa fa-print" ></i> Cetak</a>
+                    
+                    <div class="btn-group">
+                        <a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" id="btn-cetak" target="_blank" href="#"  >Cetak <i class="fa fa-angle-down" ></i></a>
+                    
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a target="_blank" href="invoice/tiket/cetak-tiket/{{$data->id}}">Cetak Invoice</a></li>
+                        {{-- <li><a target="_blank" href="invoice/tiket/cetak-dot-matrix/{{$data->id}}">Cetak Dot Matrix</a></li> --}}
+                        <li><a target="_blank" href="invoice/tiket/cetak-kwitansi/{{$data->id}}">Cetak Kwitansi</a></li>
+                      </ul>
+                    </div>
+
                     <a id="btn-cancel" href="invoice/tiket" class="btn btn-danger" ><i class="fa fa-close" ></i> Batal</a>    
                 </div>
                 
@@ -407,7 +412,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-5" >
-                                <input autocomplete="off" required type="text" placeholder="Nama" class="form-control " name="nama" value="" >
+                                <input autocomplete="off" required type="text" placeholder="Nama Penumpang" class="form-control " name="nama" value="" >
                             </div>
                             <div class="col-sm-5" >
                                 <div class="input-group" >
@@ -453,6 +458,13 @@
 
 <script type="text/javascript">
 (function ($) {
+    $('textarea').bind('keypress', function(e) {
+      if ((e.keyCode || e.which) == 13) {
+        $(this).parents('form').submit();
+        return false;
+      }
+    });
+    
     // SET DATEPICKER
     $('.input-tanggal').datepicker({
         format: 'dd-mm-yyyy',

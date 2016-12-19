@@ -73,7 +73,7 @@
                             <th>Tanggal Cetak</th>
                             <th>Jatuh Tempo</th>
                             <th>Total</th>
-                            <th class="col-sm-1 col-md-1 col-lg-1" ></th>
+                            <th  ></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -102,6 +102,9 @@
                             </td>
                             <td class="text-center" >
                                 <a class="btn btn-primary btn-xs" href="invoice/invoice-lain/edit/{{$dt->id}}" ><i class="fa fa-edit" ></i></a>
+
+                                <a class="btn btn-success btn-xs" target="_blank" data-toggle="tooltip" title="Cetak Invoice" href="invoice/invoice-lain/cetak-invoice/{{$dt->id}}" ><i class="fa fa-file-text-o" ></i></a>
+                                <a class="btn btn-warning btn-xs" target="_blank" data-toggle="tooltip" title="Cetak Kwitansi" href="invoice/invoice-lain/cetak-kwitansi/{{$dt->id}}" ><i class="fa fa-file-text-o" ></i></a>
                             </td>
                         </tr>
                         @endforeach

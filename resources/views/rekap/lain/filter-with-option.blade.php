@@ -24,11 +24,11 @@
         padding-right:5px;
     }
 
-    .table.table-min tbody tr.row-header-penumpang{
+    .table.table-min tbody tr.row-header-tamu{
         background-color: #C8DBFA;
     }
 
-    .table.table-min tbody tr.row-penumpang{
+    .table.table-min tbody tr.row-tamu{
         background-color: #F2F7F7;
     }
 
@@ -41,6 +41,18 @@
         background-color: #EEF0F0;   
         /*border-top: solid 2px red;*/
     }
+
+    @media (min-width: 768px) {
+        .dl-horizontal dt { 
+            text-align: left; 
+            white-space: normal;
+            width: 100px;
+        }
+        
+        .dl-horizontal dd { 
+            margin-left: 0;
+        }
+    }
 </style>
 @append
 
@@ -48,7 +60,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Rekapitulasi Data Pemesanan Tiket 
+        Rekapitulasi Data Pemesanan Hotel 
     </h1>
 </section>
 
@@ -58,44 +70,71 @@
     <!-- Default box -->
     <div class="box box-solid">
         <div class="box-header with-border" >
-            {{-- <form method="POST" action="rekap/tiket/cetak-by-tanggal" >
+            <form name="form-cetak" target="_blank" method="POST" action="rekap/lain/cetak-with-option" >
                 <input type="hidden" name="tanggal_cetak_awal" value="{{$tanggal_cetak_awal}}">
                 <input type="hidden" name="tanggal_cetak_akhir" value="{{$tanggal_cetak_akhir}}">
-                <button type="submit" class="btn btn-primary" id="btn-print"  ><i class="fa fa-print" ></i> Cetak</button>
-                <a href="rekap/tiket" class="btn btn-danger" id="btn-close"  ><i class="fa fa-close" ></i> Keluar</a>
-            </form> --}}
-            <a href="rekap/tiket/cetak-by-tanggal/{{$tanggal_cetak_awal}}/{{$tanggal_cetak_akhir}}" target="_blank" class="btn btn-primary" id="btn-print"  ><i class="fa fa-print" ></i> Cetak</a>
-            <a href="rekap/tiket" class="btn btn-danger" id="btn-close"  ><i class="fa fa-close" ></i> Keluar</a>
+                <input type="hidden" name="kustomer" value="{{$kustomer}}">
+                <input type="hidden" name="kantor" value="{{$kantor}}">
+                <input type="hidden" name="keterangan" value="{{$keterangan}}">
+                {{-- <input type="hidden" name="tamu" value="{{$tamu}}"> --}}
+                <input type="hidden" name="orientasi" value="P">
+
+                {{-- <div class="btn-group">
+                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown"    >Cetak <i class="fa fa-angle-down" ></i></a>
+                
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a data-orientasi="P" href="#" class="btn-cetak" >Potrait</a></li>
+                    <li><a data-orientasi="L"  href="#" class="btn-cetak" >Landscape</a></li>
+                  </ul>
+                </div> --}}
+                <button type="submit" class="btn btn-primary" data-orientasi="P" href="#" class="btn-cetak" ><i class="fa fa-print" ></i> Cetak</button>
+
+                {{-- <button type="" class="btn btn-primary" id="btn-print"  ><i class="fa fa-print" ></i> Cetak</button> --}}
+                <a href="rekap/lain" class="btn btn-danger" id="btn-close"  ><i class="fa fa-close" ></i> Keluar</a>
+            </form> 
+
         </div>
         <div class="box-body">
-            <label>Tanggal Cetak : </label>&nbsp;&nbsp;&nbsp;<span>{{str_replace('-','/',$tanggal_cetak_awal) . ' - ' . str_replace('-','/',$tanggal_cetak_akhir)}}</span>
-            <div class="clearfix" ></div>
-            <br/>
+            <dl class="dl-horizontal">
+                <dt>Tanggal Cetak</dt>
+                <dd><b>:</b>  {{str_replace('-','/',$tanggal_cetak_awal) . ' - ' . str_replace('-','/',$tanggal_cetak_akhir)}}</dd>
+                {!! $kustomer != "" ? '<dt>Kustomer</dt>':'' !!}
+                {!! $kustomer != "" ? '<dd><b>:</b>  '.$kustomer.'</dd>':'' !!}
+                
+                {!! $kantor != "" ? '<dt>Kantor</dt>':'' !!}
+                {!! $kantor != "" ? '<dd><b>:</b>  '.$kantor.'</dd>':'' !!}
+
+                {!! $keterangan != "" ? '<dt>Keterangan</dt>':'' !!}
+                {!! $keterangan != "" ? '<dd><b>:</b>  '.$keterangan.'</dd>':'' !!}
+
+                
+                
+            </dl>
 
             <div class="table-responsive" >
-                <table class="table table-bordered table-condensed  " >
+                <table class="table table-bordered table-condensed table-data " >
                     <thead>
                         <tr>
                             <th>
                                 Nomor Invoice
                             </th>
-                            <th>
+                            {{-- <th>
                                 Kode Pemesanan
-                            </th>
+                            </th> --}}
                             <th>
                                 Tanggal Cetak
                             </th>
                             <th>
-                                Nama Penumpang
+                                Keterangan
                             </th>
                             <th>
-                                Nomor Tiket
+                                Harga Satuan
                             </th>
                             <th>
-                                Maskapai
+                                Jumlah
                             </th>
                             <th>
-                                Harga
+                                Total
                             </th>
                         </tr>
                     </thead>
@@ -104,22 +143,20 @@
                         <?php $rownum=1;?>
                         <?php $rowdt = 1; ?>
                         @foreach($data as $dt)
+                            <?php $oddeven = $rowdt & 1 ? 'row-odd' : 'row-even'; ?>
+                            <?php $rowpg=1; ?>
                             
-                            @foreach($dt->data_pemesanan as $dps)
-                                <?php $oddeven = $rowdt & 1 ? 'row-odd' : 'row-even'; ?>
-                                <?php $rowpg=1; ?>
-                                @foreach($dps->data_penumpang as $dpg)
+                            @foreach($dt->data_detail as $dpg)
                                     <tr  >
-
-                                        @if(count($dps->data_penumpang) > 1)
+                                        @if(count($dt->data_detail) > 1)
                                             @if($rowpg == 1)
-                                                <td class="{{$oddeven}}" rowspan="{{count($dps->data_penumpang)}}" >
+                                                <td class="{{$oddeven}}" rowspan="{{count($dt->data_detail)}}" >
                                                     {{$dt->inv_num}} 
                                                 </td>
-                                                <td rowspan="{{count($dps->data_penumpang)}}" class="{{$oddeven}}">
-                                                    {{$dps->kode_pemesanan}}
-                                                </td>
-                                                <td class="{{$oddeven}}" rowspan="{{count($dps->data_penumpang)}}" >
+                                                {{-- <td rowspan="{{count($dt->data_detail)}}" class="{{$oddeven}}">
+                                                    {{$dt->kode_pemesanan}}
+                                                </td> --}}
+                                                <td class="{{$oddeven}}" rowspan="{{count($dt->data_detail)}}" >
                                                     {{$dt->tgl_cetak_formatted}}
                                                 </td>
                                                 
@@ -128,48 +165,48 @@
                                             <td class="{{$oddeven}}">
                                                 {{$dt->inv_num }} 
                                             </td>
-                                            <td class="{{$oddeven}}" >
-                                                {{$dps->kode_pemesanan}}
-                                            </td>
+                                            {{-- <td class="{{$oddeven}}" >
+                                                {{$dt->kode_pemesanan}}
+                                            </td> --}}
                                             <td class="{{$oddeven}}">
                                                 {{$dt->tgl_cetak_formatted}}
                                             </td>
                                         @endif
                                         
                                         <td  class="td-text-left {{$oddeven}}"  >
-                                           {{strtoupper($dpg->titel) . '. ' . $dpg->nama}}
+                                            {{$dpg->keterangan}}
                                         </td>
-                                        <td class="{{$oddeven}}">
-                                            {{$dpg->nomor_tiket}}
+                                        <td class="text-right uang {{$oddeven}}">
+                                            {{$dpg->harga_satuan}}
                                         </td>
 
-                                        @if(count($dps->data_penumpang) > 1)
+                                        @if(count($dt->data_detail) > 1)
                                             @if($rowpg == 1)                                
-                                                <td rowspan="{{count($dps->data_penumpang)}}" class="{{$oddeven}}">
-                                                    {{$dps->maskapai}}
+                                                <td rowspan="{{count($dt->data_detail)}}" class="{{$oddeven}}">
+                                                    {{$dpg->jumlah}}
                                                 </td>
                                             @endif
                                         @else
-                                            <td class="{{$oddeven}}" >
-                                                {{$dps->maskapai}}
+                                            <td class=" {{$oddeven}}" >
+                                                {{$dpg->jumlah}}
                                             </td>
                                         @endif
 
-                                        @if(count($dps->data_penumpang) > 1)
+                                        @if(count($dt->data_detail) > 1)
                                             @if($rowpg == 1)
-                                                <td rowspan="{{count($dps->data_penumpang)}}" class="text-right {{$oddeven}}">
-                                                    {{number_format($dps->harga,2,',','.')}}
+                                                <td rowspan="{{count($dt->data_detail)}}" class="text-right uang {{$oddeven}}">
+                                                    {{$dt->total}}
                                                 </td>
                                             @endif
                                         @else
-                                            <td class="text-right  {{$oddeven}}" >
-                                                {{number_format($dps->harga,2,',','.')}}
+                                            <td class="text-right uang {{$oddeven}}" >
+                                                {{$dt->total}}
                                             </td>
                                         @endif
 
                                     </tr>
 
-                                        @if(count($dps->data_penumpang) > 1)
+                                        @if(count($dt->data_detail) > 1)
                                             @if($rowpg == 1)
                                                 <?php $rowdt++;?>
                                             @endif
@@ -180,9 +217,6 @@
                                         <?php $rowpg++;?>
 
                                 @endforeach
-                                
-                            @endforeach
-                            <?php $rownum++; ?>
                         @endforeach
                     </tbody>
                 </table>
@@ -204,24 +238,18 @@
 <script type="text/javascript">
 (function ($) {
 
-    // var TBL_KATEGORI = $('#table-data').DataTable({
-    //     sort:false,
-    //     "iDisplayLength": 25
-    // });
-
     $('.uang').autoNumeric('init',{
          vMin:'0.00',
             vMax:'9999999999.00',
             aSep: '.',
-            aDec: ',', 
+            aDec: ','
     });
-
-
-
+    // alert('pret');
     $('.uang').each(function(){
         // alert('ok');
         $(this).autoNumeric('set',$(this).autoNumeric('get'));
     });
+    // alert('pret');
 
     $('.btn-show').click(function(){
         var data_id = $(this).data('id');
@@ -231,7 +259,7 @@
         // var row_content $('<td>').attr('colspan','7');
         // row_content.html('<label>Ereis Hermanto</label>');
         $('.row-detail').remove();
-        $.get('rekap/tiket/get-detail-invoice/' + data_id,null,function(res){
+        $.get('rekap/lain/get-detail-invoice/' + data_id,null,function(res){
             var newrow = '<tr style="background-color:#EEF0F0;" class="row-detail" ><td colspan="7" class="text-align:center;" >' + res +'</td></tr>';
             data_row.after(newrow);
             data_row.next().children().children().hide();
@@ -240,6 +268,15 @@
             // newrow.children('td:first').children('div').fadeIn('slow');
         });
 
+    });
+
+    $('.btn-cetak').click(function(){
+
+        var orientasi = $(this).data('orientasi');
+        $('input[name=orientasi]').val(orientasi);
+        $('form[name=form-cetak]').submit();
+
+        return false;
     });
     
 

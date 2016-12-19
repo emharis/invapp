@@ -24,14 +24,14 @@
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="img/avatar04.png" class="user-image" alt="User Image">
-                        <span class="hidden-xs">Admin</span>
+                        <span class="hidden-xs">{{strtoupper(\Auth::user()->username)}}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
                             <img src="img/avatar04.png" class="img-circle" alt="User Image">
                             <p>
-                                Admin - System Admninistrator
+                                {{strtoupper(\Auth::user()->username)}} - {{strtoupper(\Auth::user()->name)}}
                                 <!--<small>Member since Nov. 2012</small>-->
                             </p>
                         </li>

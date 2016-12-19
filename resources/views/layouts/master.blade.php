@@ -184,6 +184,7 @@
                     margin:0 auto;   
                 }
 
+            
                 
             }
 
@@ -208,6 +209,24 @@
             /*HURUF BESAR SEMUA*/
             #form-input-customer input, #form-input-customer textarea, .form-pemesanan input, .form-pemesanan textarea{
                 text-transform: uppercase;
+            }
+
+            input.input-clear {
+                display: block; 
+                padding: 0; 
+                margin: 0; 
+                border: 0; 
+                width: 100%;
+                background-color:#EEF0F0;
+                float:right;
+                padding-right: 5px;
+                padding-left: 5px;
+            }
+
+            @media (max-width: 767px) {
+                input.input-clear {
+                    margin-bottom: 5px;
+                }
             }
 
         </style>

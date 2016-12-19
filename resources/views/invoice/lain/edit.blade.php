@@ -264,6 +264,16 @@
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-6 btn-action-group"" >
                     <button id="btn-save" type="submit" class="btn btn-primary " ><i class="fa fa-save" ></i> Simpan</button>
+
+                    <div class="btn-group">
+                        <a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" id="btn-cetak" target="_blank" href="#"  >Cetak <i class="fa fa-angle-down" ></i></a>
+                    
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a target="_blank" href="invoice/invoice-lain/cetak-invoice/{{$data->id}}">Cetak Invoice</a></li>
+                        <li><a target="_blank" href="invoice/invoice-lain/cetak-kwitansi/{{$data->id}}">Cetak Kwitansi</a></li>
+                      </ul>
+                    </div>
+
                     <a id="btn-cancel" href="invoice/invoice-lain" class="btn btn-danger" ><i class="fa fa-close" ></i> Batal</a>
                 </div>
                 
@@ -322,6 +332,13 @@
 
 <script type="text/javascript">
 (function ($) {
+    $('textarea').bind('keypress', function(e) {
+      if ((e.keyCode || e.which) == 13) {
+        $(this).parents('form').submit();
+        return false;
+      }
+    });
+    
     // SET DATEPICKER
     $('.input-tanggal').datepicker({
         format: 'dd-mm-yyyy',
@@ -526,7 +543,7 @@
         var inv_data_pemesanan = JSON.parse('{"data" : [] }');
 
         $('#row-item-group').find('.row-item').each(function(){
-            var keterangan = $(this).find('input[name=keterangan]').val();     
+            var keterangan = $(this).find('textarea[name=keterangan]').val();     
             var harga_satuan = $(this).find('input[name=harga_satuan]').autoNumeric('get');    
             var jumlah = $(this).find('input[name=jumlah]').val();    
             var total_harga = $(this).find('input[name=total_harga]').autoNumeric('get');

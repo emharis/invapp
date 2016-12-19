@@ -27,7 +27,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Rekapitulasi Data Pemesanan Tiket
+        Rekapitulasi Data Pemesanan Lain
     </h1>
 </section>
 
@@ -42,7 +42,7 @@
             </label>    
         </div>
         <div class="box-body" >
-            <form  id="form-filter" method="POST" action="rekap/tiket/default-filter" role="form" >
+            <form  id="form-filter" method="POST" action="rekap/lain/default-filter" role="form" >
                 <div class="row" >
                     <div class="col-sm-6 col-md-6 col-lg-6" >
                         <div class="form-group">
@@ -89,34 +89,30 @@
                     <div class="col-sm-6 col-md-6 col-lg-6" >
                         <div class="form-group">
                             {{-- <label>
-                              <input type="radio" name="filter_option" value="penumpang" >
-                              Penumpang
+                              <input type="radio" name="filter_option" value="tamu" >
+                              Tamu
                             </label> --}}
                             <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" name="filter_option[]" class="ck_filter_option" value="penumpang">
-                                  Penumpang
+                                  <input type="checkbox" name="filter_option[]" class="ck_filter_option" value="keterangan">
+                                  Keterangan
                                 </label>
                             </div>
-                            <input type="text" class="form-control" name="penumpang"  placeholder="Penumpang" readonly >
+                            <input type="text" class="form-control" name="keterangan"  placeholder="Keterangann" readonly >
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-6 col-lg-6" >
+                    {{-- <div class="col-sm-6 col-md-6 col-lg-6" >
                         <div class="form-group">
-                            {{-- <label>
-                              <input type="radio" name="filter_option" value="maskapai" >
-                              Maskapai
-                            </label> --}}
                             <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" name="filter_option[]" class="ck_filter_option" value="maskapai">
-                                  Maskapai
+                                  <input type="checkbox" name="filter_option[]" class="ck_filter_option" value="lain">
+                                  Hotel
                                 </label>
                             </div>
-                            <input type="text" class="form-control" name="maskapai"  placeholder="Maskapai" readonly >
+                            <input type="text" class="form-control" name="lain"  placeholder="Hotel" readonly >
                         </div>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-lg-6" >
+                    </div> --}}
+                    <div class="col-sm-12 col-md-12 col-lg-12" >
                         <button type="submit" class="btn btn-primary"><i class="fa fa-search" ></i> Cari</button>
                     </div>
                 </div>
@@ -169,13 +165,13 @@
 
 
     // AUTOCOMPLETE MASKAPAI
-    function setAutoCompleteMaskapai(){
-        var input_maskapai = $('input[name=maskapai]');
-        input_maskapai.autocomplete({
-            serviceUrl: 'api/get-auto-complete-maskapai',
+    function setAutoCompleteLain(){
+        var input_lain = $('input[name=keterangan]');
+        input_lain.autocomplete({
+            serviceUrl: 'api/get-auto-complete-lain',
             params: {  
                         'nama' : function() {
-                                    return input_maskapai.val();
+                                    return input_lain.val();
                                 },
                     },
             onSelect:function(suggestions){
@@ -183,7 +179,7 @@
             }
         });
 
-        $(document).on('keyup','input[name=maskapai]',function() {
+        $(document).on('keyup','input[name=keterangan]',function() {
             // alert('pret');
             var nama = $(this).val();
             $(this).autocomplete().setOptions({
@@ -191,7 +187,7 @@
             });
         });    
     }
-    setAutoCompleteMaskapai();
+    setAutoCompleteLain();
 
     // AUTOCOMPLETE KUSTOMER
     function setAutoCompleteKustomer(){
@@ -244,13 +240,13 @@
     setAutoCompleteKantor();
 
     // AUTOCOMPLETE PENUMPANG
-    function setAutoCompletePenumpang(){
-        var input_penumpang = $('input[name=penumpang]');
-        input_penumpang.autocomplete({
+    function setAutoCompleteTamu(){
+        var input_tamu = $('input[name=tamu]');
+        input_tamu.autocomplete({
             serviceUrl: 'api/get-auto-complete-nama',
             params: {  
                         'nama' : function() {
-                                    return input_penumpang.val();
+                                    return input_tamu.val();
                                 },
                     },
             onSelect:function(suggestions){
@@ -258,7 +254,7 @@
             }
         });
 
-        $(document).on('keyup','input[name=penumpang]',function() {
+        $(document).on('keyup','input[name=tamu]',function() {
             // alert('pret');
             var nama = $(this).val();
             $(this).autocomplete().setOptions({
@@ -266,47 +262,47 @@
             });
         });    
     }
-    setAutoCompletePenumpang();
+    setAutoCompleteTamu();
    
 
     // FILTER OPTION
     $('input.ck_filter_option').change(function(){
         var val = $(this).val();
-        if(val == 'maskapai'){
-            // $('input[name=maskapai]').removeAttr('readonly').val('');
+        if(val == 'keterangan'){
+            // $('input[name=lain]').removeAttr('readonly').val('');
             // $('input[name=kustomer]').attr('readonly','readonly').val('');
-            // $('input[name=penumpang]').attr('readonly','readonly').val('');
+            // $('input[name=tamu]').attr('readonly','readonly').val('');
             // $('input[name=kantor]').attr('readonly','readonly').val('');
             if($(this).prop('checked')){
-                $('input[name=maskapai]').removeAttr('readonly').val('');
+                $('input[name=keterangan]').removeAttr('readonly').val('');
             }else{
-                $('input[name=maskapai]').attr('readonly','readonly').val('');
+                $('input[name=keterangan]').attr('readonly','readonly').val('');
             }
         }else if(val == 'kustomer'){
             // $('input[name=kustomer]').removeAttr('readonly').val('');
-            // $('input[name=maskapai]').attr('readonly','readonly').val('');
-            // $('input[name=penumpang]').attr('readonly','readonly').val('');
+            // $('input[name=lain]').attr('readonly','readonly').val('');
+            // $('input[name=tamu]').attr('readonly','readonly').val('');
             // $('input[name=kantor]').attr('readonly','readonly').val('');
             if($(this).prop('checked')){
                 $('input[name=kustomer]').removeAttr('readonly').val('');
             }else{
                 $('input[name=kustomer]').attr('readonly','readonly').val('');
             }
-        }else if(val == 'penumpang'){
-            // $('input[name=penumpang]').removeAttr('readonly').val('');
+        }else if(val == 'tamu'){
+            // $('input[name=tamu]').removeAttr('readonly').val('');
             // $('input[name=kustomer]').attr('readonly','readonly').val('');
-            // $('input[name=maskapai]').attr('readonly','readonly').val('');
+            // $('input[name=lain]').attr('readonly','readonly').val('');
             // $('input[name=kantor]').attr('readonly','readonly').val('');
             if($(this).prop('checked')){
-                $('input[name=penumpang]').removeAttr('readonly').val('');
+                $('input[name=tamu]').removeAttr('readonly').val('');
             }else{
-                $('input[name=penumpang]').attr('readonly','readonly').val('');
+                $('input[name=tamu]').attr('readonly','readonly').val('');
             }
         }else if(val == 'kantor'){
             // $('input[name=kantor]').removeAttr('readonly').val('');
             // $('input[name=kustomer]').attr('readonly','readonly').val('');
-            // $('input[name=penumpang]').attr('readonly','readonly').val('');
-            // $('input[name=maskapai]').attr('readonly','readonly').val('');
+            // $('input[name=tamu]').attr('readonly','readonly').val('');
+            // $('input[name=lain]').attr('readonly','readonly').val('');
             if($(this).prop('checked')){
                 $('input[name=kantor]').removeAttr('readonly').val('');
             }else{
@@ -321,8 +317,8 @@
 
         $('input[name=kantor]').attr('readonly','readonly');
         $('input[name=kustomer]').attr('readonly','readonly');
-        $('input[name=penumpang]').attr('readonly','readonly');
-        $('input[name=maskapai]').attr('readonly','readonly'); 
+        $('input[name=tamu]').attr('readonly','readonly');
+        $('input[name=lain]').attr('readonly','readonly'); 
     });
 
 

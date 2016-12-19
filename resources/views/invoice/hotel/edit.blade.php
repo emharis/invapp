@@ -255,7 +255,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-5" >
-                                <input autocomplete="off" required type="text" placeholder="Nama" class="form-control " name="nama" value="{{$dtm->nama}}" >
+                                <input autocomplete="off" required type="text" placeholder="Nama Tamu" class="form-control " name="nama" value="{{$dtm->nama}}" >
                             </div>
                             <div class="col-sm-5" >
                                 <div class="input-group" >
@@ -304,6 +304,16 @@
                 <div class="col-sm-12 col-md-12 col-lg-6 btn-action-group"" >
                     <a class="btn btn-success" id="btn-add-pemesanan" ><i class="fa fa-plus-circle" ></i> Data Pemesanan</a>
                     <button id="btn-save" type="submit" class="btn btn-primary " ><i class="fa fa-save" ></i> Simpan</button>
+
+                    <div class="btn-group">
+                        <a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" id="btn-cetak" target="_blank" href="#"  >Cetak <i class="fa fa-angle-down" ></i></a>
+                    
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a target="_blank" href="invoice/hotel/cetak-invoice/{{$data->id}}">Cetak Invoice</a></li>
+                        <li><a target="_blank" href="invoice/hotel/cetak-kwitansi/{{$data->id}}">Cetak Kwitansi</a></li>
+                      </ul>
+                    </div>
+
                     <a id="btn-cancel" href="invoice/hotel" class="btn btn-danger" ><i class="fa fa-close" ></i> Batal</a>
                 </div>
                 
@@ -403,7 +413,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-5" >
-                                <input autocomplete="off" required type="text" placeholder="Nama" class="form-control " name="nama" value="" >
+                                <input autocomplete="off" required type="text" placeholder="Nama Tamu" class="form-control " name="nama" value="" >
                             </div>
                             <div class="col-sm-5" >
                                 <div class="input-group" >
@@ -450,6 +460,14 @@
 
 <script type="text/javascript">
 (function ($) {
+    $('textarea').bind('keypress', function(e) {
+      if ((e.keyCode || e.which) == 13) {
+        $(this).parents('form').submit();
+        return false;
+      }
+    });
+
+    
     // SET DATEPICKER
     $('.input-tanggal').datepicker({
         format: 'dd-mm-yyyy',

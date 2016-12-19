@@ -32,14 +32,8 @@
         background-color: #F2F7F7;
     }
 
-    .table thead tr th{
-        text-align: center;
-        text-transform: uppercase;
-    }
-
-    .table tbody tr td.row-odd{
+    .table.table-data tbody tr td.row-odd{
         background-color: #EEF0F0;   
-        /*border-top: solid 2px red;*/
     }
 </style>
 @append
@@ -48,7 +42,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Rekapitulasi Data Pemesanan Tiket 
+        Rekapitulasi Data Pemesanan Tiket
     </h1>
 </section>
 
@@ -58,32 +52,33 @@
     <!-- Default box -->
     <div class="box box-solid">
         <div class="box-header with-border" >
-            {{-- <form method="POST" action="rekap/tiket/cetak-by-tanggal" >
-                <input type="hidden" name="tanggal_cetak_awal" value="{{$tanggal_cetak_awal}}">
-                <input type="hidden" name="tanggal_cetak_akhir" value="{{$tanggal_cetak_akhir}}">
-                <button type="submit" class="btn btn-primary" id="btn-print"  ><i class="fa fa-print" ></i> Cetak</button>
-                <a href="rekap/tiket" class="btn btn-danger" id="btn-close"  ><i class="fa fa-close" ></i> Keluar</a>
-            </form> --}}
-            <a href="rekap/tiket/cetak-by-tanggal/{{$tanggal_cetak_awal}}/{{$tanggal_cetak_akhir}}" target="_blank" class="btn btn-primary" id="btn-print"  ><i class="fa fa-print" ></i> Cetak</a>
+            <button class="btn btn-primary" id="btn-print"  ><i class="fa fa-print" ></i> Cetak</button>
             <a href="rekap/tiket" class="btn btn-danger" id="btn-close"  ><i class="fa fa-close" ></i> Keluar</a>
+           
         </div>
         <div class="box-body">
-            <label>Tanggal Cetak : </label>&nbsp;&nbsp;&nbsp;<span>{{str_replace('-','/',$tanggal_cetak_awal) . ' - ' . str_replace('-','/',$tanggal_cetak_akhir)}}</span>
-            <div class="clearfix" ></div>
-            <br/>
-
+            <?php $rownum=1; ?>
             <div class="table-responsive" >
-                <table class="table table-bordered table-condensed  " >
+                <table class="table table-bordered table-condensed  table-data" >
                     <thead>
                         <tr>
                             <th>
                                 Nomor Invoice
                             </th>
                             <th>
+                                Tanggal Cetak
+                            </th>
+                            <th>
+                                Tanggal Jatuh Tempo
+                            </th>
+                            <th>
                                 Kode Pemesanan
                             </th>
                             <th>
-                                Tanggal Cetak
+                                Maskapai
+                            </th>
+                            <th>
+                                Rute
                             </th>
                             <th>
                                 Nama Penumpang
@@ -92,95 +87,88 @@
                                 Nomor Tiket
                             </th>
                             <th>
-                                Maskapai
-                            </th>
-                            <th>
                                 Harga
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        
                         <?php $rownum=1;?>
-                        <?php $rowdt = 1; ?>
                         @foreach($data as $dt)
-                            
+                            <?php $rowdt = 1; ?>
                             @foreach($dt->data_pemesanan as $dps)
-                                <?php $oddeven = $rowdt & 1 ? 'row-odd' : 'row-even'; ?>
                                 <?php $rowpg=1; ?>
                                 @foreach($dps->data_penumpang as $dpg)
                                     <tr  >
-
-                                        @if(count($dps->data_penumpang) > 1)
-                                            @if($rowpg == 1)
-                                                <td class="{{$oddeven}}" rowspan="{{count($dps->data_penumpang)}}" >
-                                                    {{$dt->inv_num}} 
+                                        @if($dt->jumlah_data_penumpang > 1 )
+                                            @if($rowdt++ == 1)
+                                                <td class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}" rowspan="{{$dt->jumlah_data_penumpang}}" >
+                                                    {{$dt->inv_num}}
                                                 </td>
-                                                <td rowspan="{{count($dps->data_penumpang)}}" class="{{$oddeven}}">
-                                                    {{$dps->kode_pemesanan}}
-                                                </td>
-                                                <td class="{{$oddeven}}" rowspan="{{count($dps->data_penumpang)}}" >
+                                                <td class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}" rowspan="{{$dt->jumlah_data_penumpang}}" >
                                                     {{$dt->tgl_cetak_formatted}}
                                                 </td>
-                                                
+                                                <td class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}" rowspan="{{$dt->jumlah_data_penumpang}}">
+                                                    {{$dt->jatuh_tempo_formatted}}
+                                                </td>
                                             @endif
                                         @else
-                                            <td class="{{$oddeven}}">
-                                                {{$dt->inv_num }} 
+                                            <td class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}">
+                                                {{$dt->inv_num }}
                                             </td>
-                                            <td class="{{$oddeven}}" >
-                                                {{$dps->kode_pemesanan}}
-                                            </td>
-                                            <td class="{{$oddeven}}">
+                                            <td class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}">
                                                 {{$dt->tgl_cetak_formatted}}
+                                            </td>
+                                            <td class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}">
+                                                {{$dt->jatuh_tempo_formatted}}
                                             </td>
                                         @endif
                                         
-                                        <td  class="td-text-left {{$oddeven}}"  >
+                                        @if(count($dps->data_penumpang) > 1)
+                                            @if($rowpg == 1)
+                                                <td rowspan="{{count($dps->data_penumpang)}}" class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}">
+                                                    {{$dps->kode_pemesanan}}
+                                                </td>
+                                                <td rowspan="{{count($dps->data_penumpang)}}" class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}">
+                                                    {{$dps->maskapai}}
+                                                </td>
+                                                <td rowspan="{{count($dps->data_penumpang)}}" class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}">
+                                                    {{$dps->pergi}} {{$dps->pulang != "" ? ' - ' .$dps->pulang : ''}}
+                                                </td>
+                                            @endif
+                                        @else
+                                            <td class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}" >
+                                                {{$dps->kode_pemesanan}}
+                                            </td>
+                                            <td class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}" >
+                                                {{$dps->maskapai}}
+                                            </td>
+                                            <td class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}" >
+                                                {{$dps->pergi}} {{$dps->pulang != "" ? ' - ' .$dps->pulang : ''}}
+                                            </td>
+                                        @endif
+                                        
+                                        <td  class="{{$rownum & 1 ? 'td-text-left row-odd' : 'td-text-left row-even'}}"  >
                                            {{strtoupper($dpg->titel) . '. ' . $dpg->nama}}
                                         </td>
-                                        <td class="{{$oddeven}}">
+                                        <td class="{{$rownum & 1 ? 'row-odd' : 'row-even'}}">
                                             {{$dpg->nomor_tiket}}
                                         </td>
 
                                         @if(count($dps->data_penumpang) > 1)
-                                            @if($rowpg == 1)                                
-                                                <td rowspan="{{count($dps->data_penumpang)}}" class="{{$oddeven}}">
-                                                    {{$dps->maskapai}}
-                                                </td>
-                                            @endif
-                                        @else
-                                            <td class="{{$oddeven}}" >
-                                                {{$dps->maskapai}}
-                                            </td>
-                                        @endif
-
-                                        @if(count($dps->data_penumpang) > 1)
-                                            @if($rowpg == 1)
-                                                <td rowspan="{{count($dps->data_penumpang)}}" class="text-right {{$oddeven}}">
+                                            @if($rowpg++ == 1)
+                                                <td rowspan="{{count($dps->data_penumpang)}}" class="text-right {{$rownum & 1 ? 'row-odd' : 'row-even'}}">
                                                     {{number_format($dps->harga,2,',','.')}}
                                                 </td>
                                             @endif
                                         @else
-                                            <td class="text-right  {{$oddeven}}" >
+                                            <td class="text-right  {{$rownum & 1 ? 'row-odd' : 'row-even'}}" >
                                                 {{number_format($dps->harga,2,',','.')}}
                                             </td>
                                         @endif
 
+                                        
                                     </tr>
-
-                                        @if(count($dps->data_penumpang) > 1)
-                                            @if($rowpg == 1)
-                                                <?php $rowdt++;?>
-                                            @endif
-                                        @else
-                                            <?php $rowdt++;?>
-                                        @endif
-
-                                        <?php $rowpg++;?>
-
                                 @endforeach
-                                
                             @endforeach
                             <?php $rownum++; ?>
                         @endforeach
