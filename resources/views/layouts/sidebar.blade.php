@@ -8,27 +8,54 @@
 
             @foreach($sidemenu as $dt )
                 @if(count($dt->childMenus ) > 0)
-                    <li class="treeview {{Request::is($dt->class_request) ? 'active':''}}" >
-                        <a href="{{$dt->href}}">
-                            <i class="{{$dt->icon}}"></i>
-                            <span>{{$dt->title}}</span>
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </a>
-                        <ul class="treeview-menu">
-                            @foreach($dt->childMenus as $chd)
-                                <li class="{{Request::is($chd->class_request) ? 'active':''}}" ><a href="{{$chd->href}}"><i class="fa fa-circle-o"></i> {{$chd->title }}</a></li>
-                            @endforeach
-                        </ul>
-                    </li>
-                @else
-
-                    @if(!$dt->parentMenu)
-                        <li class="{{Request::is($dt->class_request) ? 'active':''}}" >
-                            <a href="{{$dt->href}}"> 
-                                <i class="{{$dt->icon}}"></i> 
-                                <span>{{$dt->title}} </span> 
+                    @if($dt->class_request == 'setting*')
+                        @if(Auth::user()->username == 'admin' )
+                            <li class="treeview {{Request::is($dt->class_request) ? 'active':''}}" >
+                                <a href="{{$dt->href}}">
+                                    <i class="{{$dt->icon}}"></i>
+                                    <span>{{$dt->title}}</span>
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="treeview-menu">
+                                    @foreach($dt->childMenus as $chd)
+                                        <li class="{{Request::is($chd->class_request) ? 'active':''}}" ><a href="{{$chd->href}}"><i class="fa fa-circle-o"></i> {{$chd->title }}</a></li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endif
+                    @else
+                        <li class="treeview {{Request::is($dt->class_request) ? 'active':''}}" >
+                            <a href="{{$dt->href}}">
+                                <i class="{{$dt->icon}}"></i>
+                                <span>{{$dt->title}}</span>
+                                <i class="fa fa-angle-left pull-right"></i>
                             </a>
+                            <ul class="treeview-menu">
+                                @foreach($dt->childMenus as $chd)
+                                    <li class="{{Request::is($chd->class_request) ? 'active':''}}" ><a href="{{$chd->href}}"><i class="fa fa-circle-o"></i> {{$chd->title }}</a></li>
+                                @endforeach
+                            </ul>
                         </li>
+                    @endif
+                @else
+                    @if(!$dt->parentMenu)
+                        @if($dt->class_request == 'profile*')
+                            @if(Auth::user()->username != 'admin')  
+                                <li class="{{Request::is($dt->class_request) ? 'active':''}}" >
+                                    <a href="{{$dt->href}}"> 
+                                        <i class="{{$dt->icon}}"></i> 
+                                        <span>{{$dt->title}} </span> 
+                                    </a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="{{Request::is($dt->class_request) ? 'active':''}}" >
+                                <a href="{{$dt->href}}"> 
+                                    <i class="{{$dt->icon}}"></i> 
+                                    <span>{{$dt->title}} </span> 
+                                </a>
+                            </li>
+                        @endif
                     @endif
                 @endif
             @endforeach

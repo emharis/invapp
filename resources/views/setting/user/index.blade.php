@@ -16,7 +16,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Setting User
+        Pengaturan Pengguna
     </h1>
 </section>
 
@@ -134,7 +134,7 @@
 
     // Delete Data Lokasi
     $('#btn-delete').click(function(e){
-        if(confirm('Anda akan menhapus data ini?')){
+        if(confirm('Anda akan menghapus data ini?')){
             var dataid = [];
             $('input.ck_row:checked').each(function(i){
                 var data_id = $(this).parent().parent().data('id');

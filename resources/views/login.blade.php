@@ -40,7 +40,7 @@
         <div class="login-logo">
         <img src="img/logo.png" class="img-responsive">
       </div><!-- /.login-logo -->
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">Masuk untuk memulai aplikasi</p>
         <form action="login" method="post">
           <div class="form-group has-feedback">
             <input type="text" class="form-control" placeholder="Username" name="username" autofocus>
@@ -59,7 +59,7 @@
               </div> -->
             </div><!-- /.col -->
             <div class="col-xs-4">
-              <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block btn-flat">Masuk</button>
             </div><!-- /.col -->
           </div>
         </form>

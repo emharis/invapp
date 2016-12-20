@@ -233,34 +233,38 @@ class RekapHotelController extends Controller
 		$pdfOpt->AddPage();
 		$pdfOpt->setMargins(10,10,10);
 		$pdfOpt->SetAutoPageBreak(false,10);
-	    $pdfOpt->SetXY(8,5);
+	    $pdfOpt->SetXY(8,8);
 
-		// image logo
-		$pdfOpt->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,8,5,50);
-		// header text
-	    $pdfOpt->SetFont('Arial', 'B', 8);
-	    $pdfOpt->Cell(55, 4,null,0,0,'L',false );
-	    $pdfOpt->Cell(50, 4,$company_name,0,2,'L',false );
-	    $y = $pdfOpt->GetY();
-	    $pdfOpt->SetFont('Arial', null, 8);
-	    $pdfOpt->SetTextColor(0,0,0);
-	    $pdfOpt->Cell(50, 4,$alamat,0,2,'L',false );
-	    $x = 0;
-	    $pdfOpt->Cell(50, 4,$alamat_2 ,0,2,'L',false );
-	    $pdfOpt->Cell(50, 4,'T. ' . $telp .' | ' . 'E. ' . $email ,0,2,'L',false );
-	    $y_for_line_under_header = $pdfOpt->GetY();
+		// // image logo
+		// // image logo
+		// $pdfInv->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,8,8,55);
+		// $pdfInv->SetX(65);
+		// $pdfInv->SetFont('Arial', 'B', 8);
+	 //    $pdfInv->Cell(50, 4,$company_name,0,2,'L',false );
+	 //    $y = $pdfInv->GetY();
+	 //    $pdfInv->SetFont('Arial', null, 8);
+	 //    $pdfInv->SetTextColor(0,0,0);
+	 //    $pdfInv->Cell(50, 3,$alamat,0,2,'L',false );
+	 //    $x = 0;
+	 //    $pdfInv->Cell(50, 3,$alamat_2 ,0,2,'L',false );
+	 //    $pdfInv->Cell(50, 3,'Telp. ' . $telp .' | ' . 'Fax. ' . $fax ,0,2,'L',false );
+	 //    $pdfInv->Cell(50, 3,'E-Mail. ' . $email ,0,2,'L',false );
+	 //    $pdfInv->Cell(50, 3,'Website. ' . $website ,0,2,'L',false );
+	    
+	 //    $y_for_line_under_header = $pdfOpt->GetY();
 	    
 
 
-	    // INVOICE TITEL
-	    $pdfOpt->SetXY(8,$y);
-	    $pdfOpt->SetTextColor(4,82,127);
-	    $pdfOpt->SetFont('Arial', 'B', 25);
-	    $pdfOpt->Cell($pdfOpt->GetPageWidth()-14,10,'REKAPITULASI',0,2,'R',false );
+	 //    // INVOICE TITEL
+	 //    $pdfOpt->SetXY(8,$y);
+	 //    $pdfOpt->SetTextColor(4,82,127);
+	 //    $pdfOpt->SetFont('Arial', 'B', 25);
+	 //    $pdfOpt->Cell($pdfOpt->GetPageWidth()-14,10,'REKAPITULASI',0,2,'R',false );
 	    
-	    // $pdfOpt->SetX(8);
-	    $pdfOpt->SetXY(8,$y_for_line_under_header+2);
-	    $pdfOpt->Cell($pdfOpt->GetPageWidth()-16,2,null,'B',2,false);
+	 //    // $pdfOpt->SetX(8);
+	 //    $pdfOpt->SetXY(8,$y_for_line_under_header+2);
+	 //    $pdfOpt->Cell($pdfOpt->GetPageWidth()-16,2,null,0,2,false);
+	    GeneratePdfHeader($pdfOpt,'rek');
 
 	    // -------- END OF HEADER ----------------
 
@@ -268,7 +272,7 @@ class RekapHotelController extends Controller
 	    $option_sampek_tiga_baris = false;
 
 	    // --------- SUB HEADER ------------------
-	    $pdfOpt->Ln(5);
+	    $pdfOpt->Ln(10);
 	    $pdfOpt->SetX(8);
 	    $pdfOpt->SetTextColor(0,0,0);
 	    $pdfOpt->SetFont('Arial', 'B', 8);
@@ -663,6 +667,16 @@ class RekapHotelController extends Controller
 	    $pdfOpt->Cell($width_hotel + $width_harga + 2, $total_height ,'Rp. ' . number_format($total_harga,2,',','.'),0,2,'C',true );
         // END OF TOTAL
 
+        // TERBILANG
+	    $pdfOpt->Ln(5);
+	    $pdfOpt->SetX(8);
+	    $pdfOpt->SetFont('Arial', 'B', 8);
+	    $pdfOpt->SetTextColor(255,255,255);
+	    $terbilang =  strtoupper(convertTerbilang($total_harga) . ' Rupiah');
+	    $pdfOpt->SetFillColor(145,145,145);
+	    $pdfOpt->Cell($pdfOpt->GetPageWidth()-16, 5,'   '.$terbilang,0,0,'L',true );
+	    // END OF TERBILANG
+
         // ---- FOOOTER ----------
 	    // $pdfOpt->Cell(10, 0,null,0,0,'C',false );
 	    $catatan_1 = \DB::table('appsetting')->whereName('inv_catatan_1')->first()->value;
@@ -685,8 +699,9 @@ class RekapHotelController extends Controller
 	    $pdfOpt->SetFont('Arial', null, 8);
 	    $pdfOpt->Cell($footer_left_width*2,$catatan_height,'Dicetak oleh,',0,2,'R',false );
 
-	    $pdfOpt->SetFont('Arial', null, 6);
+	    $pdfOpt->SetFont('Arial', 'BU', 6);
 	    $pdfOpt->Cell($footer_left_width,$catatan_height,$catatan_1,0,2,'L',false );
+	    $pdfOpt->SetFont('Arial', null, 6);
 	    $pdfOpt->Cell($footer_left_width,$catatan_height,$catatan_2,0,2,'L',false );
 	    $pdfOpt->Cell($footer_left_width,$catatan_height,$catatan_3,0,2,'L',false );
 	    $pdfOpt->Cell($footer_left_width,$catatan_height,$catatan_4,0,2,'L',false );

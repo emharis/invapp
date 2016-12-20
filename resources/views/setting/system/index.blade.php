@@ -16,7 +16,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Setting Sistem
+        Pengaturan Sistem
     </h1>
 </section>
 
@@ -26,8 +26,8 @@
     <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                   <li class="active"><a href="#tab_1" data-toggle="tab">Data Perusahaan</a></li>
-                  <li><a href="#tab_2" data-toggle="tab">Setting Invoice & Kwitansi</a></li>                  
-                  <li><a href="#tab_3" data-toggle="tab">Setting Umum</a></li>                  
+                  <li><a href="#tab_2" data-toggle="tab">Pengaturan Invoice & Kwitansi</a></li>                  
+                  {{-- <li><a href="#tab_3" data-toggle="tab">Setting Umum</a></li>                   --}}
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane active" id="tab_1">
@@ -41,7 +41,7 @@
                                     <td>
                                         <input name="nama_perusahaan" class="form-control" maxlength="40" placeholder="Nama Perusahaan" value="{{$setting['nama_perusahaan']}}" >
                                     </td>
-                                    <td rowspan="4" class="col-sm-2" >
+                                    <td rowspan="6" class="col-sm-2" >
                                         <img id="img-logo" src="img\{{$setting['logo']}}" class="col-sm-12" >
                                     </td>
                                 </tr>
@@ -70,12 +70,36 @@
                                         <input name="telepon" class="form-control"  placeholder="Telepon" value="{{$setting['telepon']}}" >
                                     </td>
                                 </tr>
+                                {{-- <tr>
+                                    <td class="col-sm-2" >
+                                        <label>Telepon</label>
+                                    </td>
+                                    <td>
+                                        <input name="telepon_2" class="form-control"  placeholder="Telepon" value="{{$setting['telepon_2']}}" >
+                                    </td>
+                                </tr> --}}
+                                <tr>
+                                    <td class="col-sm-2" >
+                                        <label>Fax</label>
+                                    </td>
+                                    <td>
+                                        <input name="fax" class="form-control"  placeholder="Fax" value="{{$setting['fax']}}" >
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td class="col-sm-2" >
                                         <label>Email</label>
                                     </td>
                                     <td>
                                         <input name="email" class="form-control"  placeholder="Email" value="{{$setting['email']}}" >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-sm-2" >
+                                        <label>Website</label>
+                                    </td>
+                                    <td>
+                                        <input name="website" class="form-control"  placeholder="Email" value="{{$setting['website']}}" >
                                     </td>
                                     <td>
                                         <input type="file" accept="image/*" name="logo" >
@@ -103,7 +127,7 @@
                                         <label>Catatan : </label>
                                     </td>
                                     <td>
-                                        <input name="catatan_1" class="form-control" maxlength="100" value="{{$setting_invoice['catatan_1']}}" >
+                                        <input name="catatan_1" style="font-weight: bold;text-decoration: underline;" class="form-control" maxlength="100" value="{{$setting_invoice['catatan_1']}}" >
                                     </td>
                                 </tr>
                                 <tr>
@@ -176,18 +200,71 @@
                     </form> 
 
                   </div><!-- /.tab-pane -->
-                  <div class="tab-pane" id="tab_3">
+                  {{-- <div class="tab-pane" id="tab_3">
                     <form name="form_kwitansi" method="POST" action="kwitansi/cetak" class="form-horizontal" target="_blank">
-                        <div class="form-group">
-                          <label class="col-sm-2 control-label">Nomor Urut Invoice Tiket</label>
-                          <div class="col-sm-10">
-                                <input type="text" name="sudah_terima" class="form-control input-clear" placeholder="Sudah Terima Dari" autofocus required>
-                            
-                          </div>
+                        <div class="row" >
+                            <div class="col-sm-6" >
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Nomor Urut Invoice Tiket</label>
+                                  <div class="col-sm-2">
+                                        <input type="text" name="invoice_tiket_counter" class="form-control input-clear"  autofocus required readonly value="{{$setting_invoice['inv_tiket_counter']}}" >
+                                  </div>
+                                  <div class="col-sm-2">
+                                        <a class="btn btn-danger" id="btn-reset-tiket" ><i class="fa fa-refresh" ></i> Reset</a>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Nomor Urut Invoice Hotel</label>
+                                  <div class="col-sm-2">
+                                        <input type="text" name="invoice_hotel_counter" class="form-control input-clear"  autofocus required readonly value="{{$setting_invoice['inv_hotel_counter']}}">
+                                  </div>
+                                  <div class="col-sm-2">
+                                        <a class="btn btn-danger" id="btn-reset-hotel" ><i class="fa fa-refresh" ></i> Reset</a>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Nomor Urut Invoice Lain</label>
+                                  <div class="col-sm-2">
+                                        <input type="text" name="invoice_lain_counter" class="form-control input-clear"  autofocus required readonly value="{{$setting_invoice['inv_lain_counter']}}" >
+                                  </div>
+                                  <div class="col-sm-2">
+                                        <a class="btn btn-danger" id="btn-reset-lain" ><i class="fa fa-refresh" ></i> Reset</a>
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6" >
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Prefix Invoice Tiket</label>
+                                  <div class="col-sm-2">
+                                        <input type="text" name="invoice_tiket_prefix" class="form-control input-clear"  autofocus required readonly value="{{$setting_invoice['inv_tiket_prefix']}}" >
+                                  </div>
+                                  <div class="col-sm-2">
+                                        <a class="btn btn-primary" id="btn-save-prefix-tiket" ><i class="fa fa-save" ></i> Save</a>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Prefix Invoice Hotel</label>
+                                  <div class="col-sm-2">
+                                        <input type="text" name="invoice_hotel_prefix" class="form-control input-clear"  autofocus required readonly value="{{$setting_invoice['inv_hotel_prefix']}}">
+                                  </div>
+                                  <div class="col-sm-2">
+                                        <a class="btn btn-primary" id="btn-save-prefix-hotel" ><i class="fa fa-save" ></i> Save</a>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Prefix Invoice Lain</label>
+                                  <div class="col-sm-2">
+                                        <input type="text" name="invoice_lain_prefix" class="form-control input-clear"  autofocus required readonly value="{{$setting_invoice['inv_lain_prefix']}}" >
+                                  </div>
+                                  <div class="col-sm-2">
+                                        <a class="btn btn-primary" id="btn-save-prefix-lain" ><i class="fa fa-save" ></i> Save</a>
+                                  </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
 
-                  </div><!-- /.tab-pane -->
+                  </div> --}}<!-- /.tab-pane -->
                   
                 </div><!-- /.tab-content -->
               </div><!-- nav-tabs-custom -->
@@ -204,13 +281,13 @@
 <script type="text/javascript">
 (function ($) {
 
-    // submit form data perusahaan
+    //submit form data perusahaan
     $('form[name=form_data_perusahaan]').ajaxForm(function(){
         alert('Data perusahaan telah diperbaharui');
     });
 
     $('form[name=form_setting_invoice]').ajaxForm(function(){
-        alert('Data setting invoice telah diperbaharui');
+        alert('Data pengaturan invoice telah diperbaharui');
     });
 
 

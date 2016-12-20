@@ -38,6 +38,10 @@
         /*background-color: transparent;*/
         text-decoration: underline;
     }
+
+    form input{
+        text-transform: uppercase;
+    }
 </style>
 
 @append
@@ -57,10 +61,10 @@
     <div class="box box-primary">
         <div class="box-header with-border" >
            <div class="row" >
-                        <div class="col-sm-2" >
+                        <div class="col-sm-3" >
                             <img style="height: 60px;" src="img/{{$setting['logo']}}" >
                         </div>
-                        <div class="col-sm-10" >
+                        <div class="col-sm-9" >
                             <dl class="dl-horizontal">
                                 <dt>{{$setting['company_name']}}</dt>
                                 <dt class="dt-normal">{{$setting['alamat']}}</dt>
@@ -82,7 +86,7 @@
                 <div class="form-group">
                   <label for="inputPassword3" class="col-sm-2 control-label">BANYAKNYA UANG</label>
                   <div class="col-sm-10">
-                        <input type="text" name="banyaknya" class="form-control input-clear" placeholder="Banyaknya Uang" disabled>
+                        <input style="background-color: #FAE1F1;" type="text" name="banyaknya" class="form-control input-clear" placeholder="" disabled>
                     
                   </div>
                 </div>

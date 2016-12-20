@@ -119,7 +119,7 @@
                 <table class="table table-bordered table-condensed  table-data" >
                     <thead>
                         <tr>
-                            <th>
+                            <th >
                                 Nomor Invoice
                             </th>
                             <th>

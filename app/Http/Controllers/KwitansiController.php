@@ -44,45 +44,47 @@ class KwitansiController extends Controller
 		$kodepos = \DB::table('appsetting')->whereName('kodepos')->first()->value;	    
 		$telp = \DB::table('appsetting')->whereName('telp')->first()->value;	    
 		$email = \DB::table('appsetting')->whereName('email')->first()->value;	    
+		$website = \DB::table('appsetting')->whereName('website')->first()->value;	    
+		$fax = \DB::table('appsetting')->whereName('fax')->first()->value;	    
 
 		$pdfKw = new \Codedge\Fpdf\Fpdf\FPDF('L','mm',array(210,99));
 		$pdfKw->AddPage();
 		$pdfKw->SetMargins(0,0,0);
 		$pdfKw->SetAutoPageBreak(true,0);
 
-		$pdfKw->SetXY(8,5);
-		// image logo
-		$pdfKw->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,8,5,50);
-	    
-		// generate header
-	    $pdfKw->SetFont('Arial', 'B', 8);
-	    $pdfKw->Cell(55, 4,null,0,0,'L',false );
-	    $pdfKw->Cell(50, 4,$company_name,0,2,'L',false );
-	    $y = $pdfKw->GetY();
-	    $pdfKw->SetFont('Arial', null, 8);
-	    $pdfKw->SetTextColor(0,0,0);
-	    $pdfKw->Cell(50, 4,$alamat,0,2,'L',false );
-	    $x = 0;
-    		
-	    // $pdfKw->Cell(50, 4,$kecamatan . ', ' . $kabupaten .' ' . $kodepos ,0,2,'L',false );
-	    $pdfKw->Cell(50, 4,$alamat_2 ,0,2,'L',false );
-	    $pdfKw->Cell(50, 4,'T. ' . $telp .' | ' . 'E. ' . $email ,0,2,'L',false );
-	    $y_for_line_under_header = $pdfKw->GetY();
+		$pdfKw->SetXY(8,8);
+		// // image logo
+		// $pdfKw->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,8,8,55);
+		// $pdfKw->SetX(65);
+		// $pdfKw->SetFont('Arial', 'B', 8);
+	 //    $pdfKw->Cell(50, 4,$company_name,0,2,'L',false );
+	 //    $y = $pdfKw->GetY();
+	 //    $pdfKw->SetFont('Arial', null, 8);
+	 //    $pdfKw->SetTextColor(0,0,0);
+	 //    $pdfKw->Cell(50, 3,$alamat,0,2,'L',false );
+	 //    $x = 0;
+	 //    $pdfKw->Cell(50, 3,$alamat_2 ,0,2,'L',false );
+	 //    $pdfKw->Cell(50, 3,'Telp. ' . $telp .' | ' . 'Fax. ' . $fax ,0,2,'L',false );
+	 //    $pdfKw->Cell(50, 3,'E-Mail. ' . $email ,0,2,'L',false );
+	 //    $pdfKw->Cell(50, 3,'Website. ' . $website ,0,2,'L',false );
+	 //    $y_for_line_under_header = $pdfKw->GetY() -3;
 
-	    // KWITANSI TITEL
-	    $pdfKw->SetTextColor(4,82,127);
-	    $pdfKw->SetFont('Arial', 'B', 25);
-	    // $pdfKw->Cell(110, 15,null,0,0,'L',false );
-	    // $pdfKw->SetXY(0,$y);
-	    // $pdfKw->Cell(0,10,'KWITANSI     ',0,2,'R',false );
-	    $pdfKw->SetXY(10,$y);
-	    $pdfKw->Cell($pdfKw->GetPageWidth()-15,10,'KWITANSI',0,2,'R',false );
+	 //    // KWITANSI TITEL
+	 //    $pdfKw->SetTextColor(4,82,127);
+	 //    $pdfKw->SetFont('Arial', 'B', 25);
+	 //    // $pdfKw->Cell(110, 15,null,0,0,'L',false );
+	 //    // $pdfKw->SetXY(0,$y);
+	 //    // $pdfKw->Cell(0,10,'KWITANSI     ',0,2,'R',false );
+	 //    $pdfKw->SetXY(10,$y);
+	 //    $pdfKw->Cell($pdfKw->GetPageWidth()-15,10,'KWITANSI',0,2,'R',false );
 
-	    // LINE
-	    $pdfKw->SetXY(8,$y_for_line_under_header+5);
-	    $pdfKw->SetDrawColor(82,82,86);
-	    $pdfKw->Cell(195,1,null,'B',2,'L',false);
-	    // $pdfKw->Cell(0,1,null,'B',2,'L',false);
+	 //    // LINE
+	 //    $pdfKw->SetXY(8,$y_for_line_under_header+5);
+	 //    $pdfKw->SetDrawColor(82,82,86);
+	 //    $pdfKw->Cell(195,1,null,'B',2,'L',false);
+	 //    // $pdfKw->Cell(0,1,null,'B',2,'L',false);
+
+		GeneratePdfHeader($pdfKw,'kw');
 
 	    // CONTENT
 		
@@ -96,12 +98,12 @@ class KwitansiController extends Controller
 	    $pdfKw->SetFont('Courier', null, 10);
 	    $x = $pdfKw->GetX();
 	    $y = $pdfKw->GetY();
-	    $pdfKw->Cell(0,5,$req->sudah_terima,0,2,'L',false);
+	    $pdfKw->Cell(0,5,strtoupper($req->sudah_terima),0,2,'L',false);
 	    // titik titik
 	    $pdfKw->SetXY($x,$y+1);
 	    $pdfKw->Cell(0,5,'................................................................',0,2,'L',false);
 
-	    $pdfKw->Ln(3);
+	    $pdfKw->Ln(2);
 
 	    $pdfKw->SetX(10);
 		$pdfKw->SetFont('Courier', 'B', 10);
@@ -112,7 +114,6 @@ class KwitansiController extends Controller
 	    $uang = str_replace('.','',substr($req->jumlah_uang, 0, -3));
 	    $terbilang = strtoupper(convertTerbilang($uang) . ' Rupiah');
 
-	    // if(strlen($terbilang) > 65){
 	    	$x = $pdfKw->GetX();
 	    	$y = $pdfKw->GetY();
 	    	$pdfKw->MultiAlignCell(140,5,$terbilang,0,2,'L',false);
@@ -126,15 +127,7 @@ class KwitansiController extends Controller
 	    	$pdfKw->SetXY($x,$y);
 	    	$pdfKw->Cell(0,5,'................................................................',0,2,'L',false);
 
-	    // }else{
-	    // 	$x = $pdfKw->GetX();
-	    // 	$y = $pdfKw->GetY();
-	    // 	$pdfKw->Cell(140,5,$terbilang,0,2,'L',false);
-	    // 	$pdfKw->SetXY($x,$y+1);
-	    // 	$pdfKw->Cell(0,5,'................................................................',0,2,'L',false);
-	    // }
-
-	    $pdfKw->Ln(3);
+	    $pdfKw->Ln(2);
 
 	    $pdfKw->SetX(10);
 	    $pdfKw->SetTextColor(0,0,0);
@@ -144,7 +137,7 @@ class KwitansiController extends Controller
 	    $pdfKw->SetFont('Courier', null, 10);
 	    $x = $pdfKw->GetX();
 	    $y = $pdfKw->GetY();
-	    $pdfKw->MultiAlignCell(145,5,$req->untuk_pembayaran,0,2,'L',false);
+	    $pdfKw->MultiAlignCell(145,5,strtoupper($req->untuk_pembayaran),0,2,'L',false);
 	    $pdfKw->SetXY($x,$y+1);
 	    $pdfKw->Cell(0,5,'................................................................',0,2,'L',false);
 	    $y = $pdfKw->GetY();
@@ -197,7 +190,7 @@ class KwitansiController extends Controller
 	    		// $pdfKw->Cell(91,$col_height_catatan,\DB::table('appsetting')->whereName('kwitansi_kota')->first()->value . ', ' .$data_invoice->tgl_cetak_formatted,0,2,'R',false);
 	    
 
-	    $pdfKw->SetFont('Arial', null, 6);
+	    $pdfKw->SetFont('Arial', 'BU', 6);
 	    $pdfKw->SetX(8);
 	    $pdfKw->Cell($col_width,$col_height_catatan,$catatan_1,0,2,'L',false);	    		
 	    $pdfKw->SetFont('Arial', null, 6);
@@ -219,13 +212,13 @@ class KwitansiController extends Controller
 		// $pdfKw->Cell($col_width,$col_height_catatan,null,0,0,'L',false);	    		
 		// generate tanggal
 		$tanggal = $req->tanggal;
-		$pdfKw->Cell($col_width-6,$col_height_catatan,$req->kota . ', ' . $tanggal,0,2,'R',false);
+		$pdfKw->Cell($col_width-6,$col_height_catatan,strtoupper($req->kota) . ', ' . FormatTanggal($tanggal),0,2,'R',false);
 
 		$pdfKw->Ln(18);
 
 		$pdfKw->SetX($col_width);
 		$pdfKw->SetFont('Arial', 'B', 8);
-		$pdfKw->Cell($col_width-6,$col_height_catatan,$req->nama,0,2,'R',false);
+		$pdfKw->Cell($col_width-6,$col_height_catatan,strtoupper($req->nama),0,2,'R',false);
 		$pdfKw->SetFont('Arial', null, 8);
 		$pdfKw->Cell($col_width-6,$col_height_catatan,$company_name,0,2,'R',false);
 
@@ -245,40 +238,44 @@ class KwitansiController extends Controller
 		$kodepos = \DB::table('appsetting')->whereName('kodepos')->first()->value;	    
 		$telp = \DB::table('appsetting')->whereName('telp')->first()->value;	    
 		$email = \DB::table('appsetting')->whereName('email')->first()->value;	    
+		$fax = \DB::table('appsetting')->whereName('fax')->first()->value;	    
+		$website = \DB::table('appsetting')->whereName('website')->first()->value;	    
 
 		$pdfKw = new \Codedge\Fpdf\Fpdf\FPDF('L','mm',array(210,99));
 		$pdfKw->AddPage();
 		$pdfKw->SetMargins(0,0,0);
 		$pdfKw->SetAutoPageBreak(true,0);
 
-		$pdfKw->SetXY(8,5);
-		// image logo
-		$pdfKw->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,8,5,50);
-	    
-		// generate header
-	    $pdfKw->SetFont('Arial', 'B', 8);
-	    $pdfKw->Cell(55, 4,null,0,0,'L',false );
-	    $pdfKw->Cell(50, 4,$company_name,0,2,'L',false );
-	    $y = $pdfKw->GetY();
-	    $pdfKw->SetFont('Arial', null, 8);
-	    $pdfKw->SetTextColor(0,0,0);
-	    $pdfKw->Cell(50, 4,$alamat,0,2,'L',false );
-	    $x = 0;
-    		
-	    $pdfKw->Cell(50, 4,$alamat_2 ,0,2,'L',false );
-	    $pdfKw->Cell(50, 4,'T. ' . $telp .' | ' . 'E. ' . $email ,0,2,'L',false );
-	    $y_for_line_under_header = $pdfKw->GetY();
+		$pdfKw->SetXY(8,8);
+		// // image logo
+		// $pdfKw->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,8,8,55);
+		// $pdfKw->SetX(65);
+		// $pdfKw->SetFont('Arial', 'B', 8);
+	 //    $pdfKw->Cell(50, 4,$company_name,0,2,'L',false );
+	 //    $y = $pdfKw->GetY();
+	 //    $pdfKw->SetFont('Arial', null, 8);
+	 //    $pdfKw->SetTextColor(0,0,0);
+	 //    $pdfKw->Cell(50, 3,$alamat,0,2,'L',false );
+	 //    $x = 0;
+	 //    $pdfKw->Cell(50, 3,$alamat_2 ,0,2,'L',false );
+	 //    $pdfKw->Cell(50, 3,'Telp. ' . $telp .' | ' . 'Fax. ' . $fax ,0,2,'L',false );
+	 //    $pdfKw->Cell(50, 3,'E-Mail. ' . $email ,0,2,'L',false );
+	 //    $pdfKw->Cell(50, 3,'Website. ' . $website ,0,2,'L',false );
 
-	    // KWITANSI TITEL
-	    $pdfKw->SetTextColor(4,82,127);
-	    $pdfKw->SetFont('Arial', 'B', 25);
-	    $pdfKw->SetXY(10,$y);
-	    $pdfKw->Cell($pdfKw->GetPageWidth()-15,10,'KWITANSI',0,2,'R',false );
+	 //    $y_for_line_under_header = $pdfKw->GetY()  -3;
 
-	    // LINE
-	    $pdfKw->SetXY(8,$y_for_line_under_header+5);
-	    $pdfKw->SetDrawColor(82,82,86);
-	    $pdfKw->Cell(195,1,null,'B',2,'L',false);
+	 //    // KWITANSI TITEL
+	 //    $pdfKw->SetTextColor(4,82,127);
+	 //    $pdfKw->SetFont('Arial', 'B', 25);
+	 //    $pdfKw->SetXY(10,$y);
+	 //    $pdfKw->Cell($pdfKw->GetPageWidth()-15,10,'KWITANSI',0,2,'R',false );
+
+	 //    // LINE
+	 //    $pdfKw->SetXY(8,$y_for_line_under_header+5);
+	 //    $pdfKw->SetDrawColor(82,82,86);
+	 //    $pdfKw->Cell(195,1,null,'B',2,'L',false);
+
+		GeneratePdfHeader($pdfKw,'kw');
 
 	    // CONTENT
 		
@@ -297,7 +294,7 @@ class KwitansiController extends Controller
 	    $pdfKw->SetXY($x,$y+1);
 	    $pdfKw->Cell(0,5,'................................................................',0,2,'L',false);
 
-	    $pdfKw->Ln(3);
+	    $pdfKw->Ln(2);
 
 	    $pdfKw->SetX(10);
 		$pdfKw->SetFont('Courier', 'B', 10);
@@ -320,7 +317,7 @@ class KwitansiController extends Controller
 	    	$pdfKw->SetXY($x,$y);
 	    	$pdfKw->Cell(0,5,'................................................................',0,2,'L',false);
 
-	    $pdfKw->Ln(3);
+	    $pdfKw->Ln(2);
 
 	    $pdfKw->SetX(10);
 	    $pdfKw->SetTextColor(0,0,0);
@@ -343,15 +340,17 @@ class KwitansiController extends Controller
 	    $pdfKw->Cell(195,1,null,'B',2,'L',false);
 
 	    // TOTAL
-	    $pdfKw->SetTextColor(255,255,255);
+	    $pdfKw->SetTextColor(0,0,0);
 	    $pdfKw->SetFillColor(4,82,127);
-	    $pdfKw->SetDrawColor(4,82,127);
+	    // $pdfKw->SetDrawColor(4,82,127);
 	    $pdfKw->SetFont('Arial', 'B', 12);
 	    $pdfKw->Ln(3);
 	    $x_catatan = $pdfKw->GetX();
 	    $y_catatan = $pdfKw->GetY();
 	    $pdfKw->SetX(11);
-	    $pdfKw->Cell(42,6,null,1,0,'C',false);
+	    $pdfKw->SetLineWidth(0.5);
+	    $pdfKw->Cell(42,7,'Rp.','TB',0,'L',false);
+	    $pdfKw->SetLineWidth(0.2);
 	    // ----- TOTAL -----------
 
 
@@ -371,7 +370,7 @@ class KwitansiController extends Controller
 	    $col_height_catatan = 2.5;
 	    $col_width = $pdfKw->GetPageWidth()/2;	    
 
-	    $pdfKw->SetFont('Arial', null, 6);
+	    $pdfKw->SetFont('Arial', 'BU', 6);
 	    $pdfKw->SetX(8);
 	    $pdfKw->Cell($col_width,$col_height_catatan,$catatan_1,0,2,'L',false);	    		
 	    $pdfKw->SetFont('Arial', null, 6);
@@ -389,11 +388,11 @@ class KwitansiController extends Controller
 
 	    // col 
 
-		$pdfKw->Cell(($col_width-6)/4,$col_height_catatan,null,null,0,'R',false);
-		$pdfKw->Cell(($col_width-6)/4 ,$col_height_catatan,null,'B',0,'R',false);
-		$pdfKw->Cell(($col_width-6)/4 - 2,$col_height_catatan,null,'B',0,'R',false);
+		$pdfKw->Cell(($col_width-7)/4,$col_height_catatan,null,null,0,'R',false);
+		$pdfKw->Cell(($col_width-7)/4 ,$col_height_catatan,null,'B',0,'R',false);
 		$pdfKw->Cell(2,$col_height_catatan,',',0,0,'R',false);
-		$pdfKw->Cell(($col_width-6)/4,$col_height_catatan,null,'B',2,'R',false);
+		$pdfKw->Cell(($col_width-7)/4 - 2,$col_height_catatan,null,'B',0,'R',false);
+		$pdfKw->Cell(($col_width-7)/4,$col_height_catatan,null,'B',2,'R',false);
 
 		$pdfKw->Ln(18);
 
@@ -402,10 +401,10 @@ class KwitansiController extends Controller
 		// $pdfKw->Cell($col_width/2,$col_height_catatan,null,0,0,'R',false);
 		$y = $pdfKw->GetY();
 		$pdfKw->SetXY($col_width,$y-2);
-		$pdfKw->Cell(($col_width-6)/4,$col_height_catatan,null,0,0,'R',false);
-		$pdfKw->Cell(($col_width-6)/4,$col_height_catatan,null,'B',0,'R',false);
-		$pdfKw->Cell(($col_width-6)/4,$col_height_catatan,null,'B',0,'R',false);
-		$pdfKw->Cell(($col_width-6)/4,$col_height_catatan,null,'B',2,'R',false);
+		$pdfKw->Cell(($col_width-7)/4,$col_height_catatan,null,0,0,'R',false);
+		$pdfKw->Cell(($col_width-7)/4-4,$col_height_catatan,null,0,0,'R',false);
+		$pdfKw->Cell(($col_width-7)/4+4,$col_height_catatan,null,'B',0,'R',false);
+		$pdfKw->Cell(($col_width-7)/4,$col_height_catatan,null,'B',2,'R',false);
 		$y = $pdfKw->GetY();
 		$pdfKw->SetXY($col_width,$y+2);
 		$pdfKw->SetFont('Arial', null, 8);

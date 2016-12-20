@@ -16,7 +16,10 @@ class SettingController extends Controller
 		$setting['alamat'] = \DB::table('appsetting')->whereName('alamat')->first()->value;
 		$setting['alamat_2'] = \DB::table('appsetting')->whereName('alamat_2')->first()->value;
 		$setting['telepon'] = \DB::table('appsetting')->whereName('telp')->first()->value;
+		// $setting['telepon_2'] = \DB::table('appsetting')->whereName('telp_2')->first()->value;
+		$setting['fax'] = \DB::table('appsetting')->whereName('fax')->first()->value;
 		$setting['email'] = \DB::table('appsetting')->whereName('email')->first()->value;
+		$setting['website'] = \DB::table('appsetting')->whereName('website')->first()->value;
 		$setting['logo'] = \DB::table('appsetting')->whereName('logo')->first()->value;
 
 		$setting_invoice['catatan_1'] = \DB::table('appsetting')->whereName('inv_catatan_1')->first()->value;
@@ -27,6 +30,16 @@ class SettingController extends Controller
 		$setting_invoice['catatan_6'] = \DB::table('appsetting')->whereName('inv_catatan_6')->first()->value;
 		$setting_invoice['catatan_7'] = \DB::table('appsetting')->whereName('inv_catatan_7')->first()->value;
 		$setting_invoice['kwitansi_kota'] = \DB::table('appsetting')->whereName('kwitansi_kota')->first()->value;
+		
+		$setting_invoice['inv_tiket_counter'] = \DB::table('appsetting')->whereName('inv_tiket_counter')->first()->value;
+		$setting_invoice['inv_hotel_counter'] = \DB::table('appsetting')->whereName('inv_hotel_counter')->first()->value;
+		$setting_invoice['inv_lain_counter'] = \DB::table('appsetting')->whereName('inv_lain_counter')->first()->value;
+
+		$setting_invoice['inv_tiket_prefix'] = \DB::table('appsetting')->whereName('inv_tiket_prefix')->first()->value;
+		$setting_invoice['inv_hotel_prefix'] = \DB::table('appsetting')->whereName('inv_hotel_prefix')->first()->value;
+		$setting_invoice['inv_lain_prefix'] = \DB::table('appsetting')->whereName('inv_lain_prefix')->first()->value;
+
+
 		
 		return view('setting.system.index',[
 				'setting' => $setting,
@@ -39,9 +52,12 @@ class SettingController extends Controller
 		\DB::table('appsetting')->whereName('alamat')->update(['value' => $req->alamat]);
 		\DB::table('appsetting')->whereName('alamat_2')->update(['value' => $req->alamat_2]);
 		\DB::table('appsetting')->whereName('telp')->update(['value' => $req->telepon]);
+		// \DB::table('appsetting')->whereName('telp_2')->update(['value' => $req->telepon_2]);
+		\DB::table('appsetting')->whereName('fax')->update(['value' => $req->fax]);
 		\DB::table('appsetting')->whereName('email')->update(['value' => $req->email]);
+		\DB::table('appsetting')->whereName('website')->update(['value' => $req->website]);
 
-		if ($req->logo->isValid()) {
+		if ($req->hasFile('logo')) {
 	      $destinationPath = 'img'; // upload path
 	      $extension = $req->logo->getClientOriginalExtension(); // getting image extension
 	      $fileName = 'logo_perusahaan.' . $extension;//rand(11111,99999).'.'.$extension; // renameing image

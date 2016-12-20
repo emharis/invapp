@@ -25,7 +25,7 @@ class UserController extends Controller
 		//register user
 		\DB::table('users')->insert([
 		   'username' => $req->username,
-		   'name' => $req->nama,
+		   'name' => strtoupper($req->nama),
 		   'email' => $req->username.'@invapp.app',
 		   'password' => bcrypt($req->password),
 		   'verified' => 1,
@@ -47,7 +47,7 @@ class UserController extends Controller
 			->where('id',$req->id)
 			->update([
 			   'username' => $req->username,
-			   'name' => $req->nama,
+			   'name' => strtoupper($req->nama),
 			   // 'email' => $req->username.'@invapp.app',
 			   // 'password' => bcrypt($req->password),
 			   // 'verified' => 1,

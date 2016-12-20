@@ -37,15 +37,7 @@ class RekapLainController extends Controller
 
 					}
 				}
-				// else if($ft == 'hotel'){
-				// 	if(count($req->filter_option) > 1){
-				// 		$where_pemesanan =  $where_pemesanan . ' and ' . " hotel like '%" . $req->hotel . "%'";
-
-				// 	}else{
-				// 		$where_pemesanan = $where_pemesanan . " hotel like '%" . $req->hotel . "%'";
-
-				// 	}
-				// }
+				
 				else if($ft == 'keterangan'){
 					$where_keterangan =  " keterangan like '%" . $req->keterangan . "%'";
 				}
@@ -105,44 +97,6 @@ class RekapLainController extends Controller
         		'data' => $data
         	])->with($req->input());
 	}
-
-
-	// public function filterByTanggal(Request $req){
-	// 	// generate tanggal_cetak
-	// 	$tanggal_cetak_awal = $req->tanggal_cetak_awal;
- //        $arr_tgl = explode('-',$tanggal_cetak_awal);
- //        $tanggal_cetak_awal = new \DateTime();
- //        $tanggal_cetak_awal->setDate($arr_tgl[2],$arr_tgl[1],$arr_tgl[0]);     
- //        $tanggal_cetak_awal_str = $arr_tgl[2].'-'.$arr_tgl[1].'-'.$arr_tgl[0];     
-
-	// 	// generate jatuh_tempo
-	// 	$tanggal_cetak_akhir = $req->tanggal_cetak_akhir;
- //        $arr_tgl = explode('-',$tanggal_cetak_akhir);
- //        $tanggal_cetak_akhir = new \DateTime();
- //        $tanggal_cetak_akhir->setDate($arr_tgl[2],$arr_tgl[1],$arr_tgl[0]); 
- //        $tanggal_cetak_akhir_str = $arr_tgl[2].'-'.$arr_tgl[1].'-'.$arr_tgl[0];
-
- //        $data = \DB::table('invoice_hotel')
- //        					->select('*',\DB::raw('date_format(tgl_cetak,"%d-%m-%Y") as tgl_cetak_formatted'),\DB::raw('date_format(jatuh_tempo,"%d-%m-%Y") as jatuh_tempo_formatted'))
- //        					->whereBetween('tgl_cetak',[$tanggal_cetak_awal_str,$tanggal_cetak_akhir_str])
-	//         				->get();
-
-	//     foreach($data as $dt){
-	//     	$dt->data_pemesanan = \DB::table('invoice_hotel_data_pemesanan')->where('invoice_hotel_id',$dt->id)->get();
-
-	//     	foreach($dt->data_pemesanan as $dps){
-	// 			$dps->data_detail = \DB::table('invoice_hotel_data_detail')
-	// 									->where('invoice_hotel_data_pemesanan_id',$dps->id)
-	// 									->get();
-
-	// 			$dt->jumlah_data_detail = (isset($dt->jumlah_data_detail)  ? $dt->jumlah_data_detail:0) + count($dps->data_detail);
-	// 		}
-	//     }
-
- //        return view('rekap.lain.filter-by-tanggal',[
- //        		'data' => $data
- //        	])->with($req->input());
-	// }
 
 
 	public function cetakWithOption(Request $req){
@@ -207,8 +161,6 @@ class RekapLainController extends Controller
         	
         }
 
-        // CETAK PDF
-
 	    // -------- HEADER ----------------
 	    $company_name = \DB::table('appsetting')->whereName('nama_perusahaan')->first()->value;	    
 		$alamat = \DB::table('appsetting')->whereName('alamat')->first()->value;	    
@@ -223,34 +175,36 @@ class RekapLainController extends Controller
 		$pdfOpt->AddPage();
 		$pdfOpt->setMargins(10,10,10);
 		$pdfOpt->SetAutoPageBreak(false,10);
-	    $pdfOpt->SetXY(8,5);
+	    $pdfOpt->SetXY(8,8);
 
-		// image logo
-		$pdfOpt->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,8,5,50);
-		// header text
-	    $pdfOpt->SetFont('Arial', 'B', 8);
-	    $pdfOpt->Cell(55, 4,null,0,0,'L',false );
-	    $pdfOpt->Cell(50, 4,$company_name,0,2,'L',false );
-	    $y = $pdfOpt->GetY();
-	    $pdfOpt->SetFont('Arial', null, 8);
-	    $pdfOpt->SetTextColor(0,0,0);
-	    $pdfOpt->Cell(50, 4,$alamat,0,2,'L',false );
-	    $x = 0;
-	    $pdfOpt->Cell(50, 4,$alamat_2 ,0,2,'L',false );
-	    $pdfOpt->Cell(50, 4,'T. ' . $telp .' | ' . 'E. ' . $email ,0,2,'L',false );
-	    $y_for_line_under_header = $pdfOpt->GetY();
+		// // image logo
+		// $pdfOpt->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,8,8,50);
+		// // header text
+	 //    $pdfOpt->SetFont('Arial', 'B', 8);
+	 //    $pdfOpt->Cell(55, 4,null,0,0,'L',false );
+	 //    $pdfOpt->Cell(50, 4,$company_name,0,2,'L',false );
+	 //    $y = $pdfOpt->GetY();
+	 //    $pdfOpt->SetFont('Arial', null, 8);
+	 //    $pdfOpt->SetTextColor(0,0,0);
+	 //    $pdfOpt->Cell(50, 4,$alamat,0,2,'L',false );
+	 //    $x = 0;
+	 //    $pdfOpt->Cell(50, 4,$alamat_2 ,0,2,'L',false );
+	 //    $pdfOpt->Cell(50, 4,'T. ' . $telp .' | ' . 'E. ' . $email ,0,2,'L',false );
+	 //    $y_for_line_under_header = $pdfOpt->GetY();
 	    
 
 
-	    // INVOICE TITEL
-	    $pdfOpt->SetXY(8,$y);
-	    $pdfOpt->SetTextColor(4,82,127);
-	    $pdfOpt->SetFont('Arial', 'B', 25);
-	    $pdfOpt->Cell($pdfOpt->GetPageWidth()-14,10,'REKAPITULASI',0,2,'R',false );
+	 //    // INVOICE TITEL
+	 //    $pdfOpt->SetXY(8,$y);
+	 //    $pdfOpt->SetTextColor(4,82,127);
+	 //    $pdfOpt->SetFont('Arial', 'B', 25);
+	 //    $pdfOpt->Cell($pdfOpt->GetPageWidth()-14,10,'REKAPITULASI',0,2,'R',false );
 	    
-	    // $pdfOpt->SetX(8);
-	    $pdfOpt->SetXY(8,$y_for_line_under_header+2);
-	    $pdfOpt->Cell($pdfOpt->GetPageWidth()-16,2,null,'B',2,false);
+	 //    // $pdfOpt->SetX(8);
+	 //    $pdfOpt->SetXY(8,$y_for_line_under_header+2);
+	 //    $pdfOpt->Cell($pdfOpt->GetPageWidth()-16,2,null,0,2,false);
+
+	    GeneratePdfHeader($pdfOpt,'rek');
 
 	    // -------- END OF HEADER ----------------
 
@@ -258,7 +212,7 @@ class RekapLainController extends Controller
 	    $option_sampek_tiga_baris = false;
 
 	    // --------- SUB HEADER ------------------
-	    $pdfOpt->Ln(5);
+	    $pdfOpt->Ln(10);
 	    $pdfOpt->SetX(8);
 	    $pdfOpt->SetTextColor(0,0,0);
 	    $pdfOpt->SetFont('Arial', 'B', 8);
@@ -352,11 +306,6 @@ class RekapLainController extends Controller
 	    $pdfOpt->SetFillColor(255,255,255);
 	    $pdfOpt->Cell($width_separator,$col_heider_height,null,0,0,'C',true);
 
-	    // $pdfOpt->SetFillColor(4,82,127);	    
-	    // $pdfOpt->Cell($width_nomor_invoice,$col_heider_height,'NOMOR INVOICE',0,0,'C',true);
-	    // $pdfOpt->SetFillColor(255,255,255);
-	    // $pdfOpt->Cell($width_separator,$col_heider_height,null,0,0,'C',true);
-
 	    $pdfOpt->SetFillColor(4,82,127);
 	    $x_nomor_invoice = $pdfOpt->GetX();
 	    $y_nomor_invoice = $pdfOpt->GetY();
@@ -371,21 +320,6 @@ class RekapLainController extends Controller
 	    }
 	    $pdfOpt->SetFillColor(255,255,255);
 	    $pdfOpt->Cell($width_separator,$col_heider_height,null,0,0,'C',true);
-
-	    // $pdfOpt->SetFillColor(4,82,127);
-	    // $x_kode_pemesanan = $pdfOpt->GetX();
-	    // $y_kode_pemesanan = $pdfOpt->GetY();
-	    // if($pdfOpt->GetStringWidth('KODE PEMESANAN') > $width_kode_pemesanan){
-		   //  $pdfOpt->Cell($width_kode_pemesanan,$col_heider_height,null,0,0,'C',true);
-		   //  $pdfOpt->SetXY($x_kode_pemesanan,$y_kode_pemesanan+2);
-		   //  $pdfOpt->MultiAlignCell($width_kode_pemesanan,$col_heider_height/2-2,'KODE PEMESANAN',0,0,'C',true);
-		   //  $pdfOpt->SetXY($pdfOpt->GetX(),$y_kode_pemesanan);
-	    	
-	    // }else{
-	    // 	$pdfOpt->Cell($width_kode_pemesanan,$col_heider_height,'KODE PEMESANAN',0,0,'C',true);
-	    // }
-	    // $pdfOpt->SetFillColor(255,255,255);
-	    // $pdfOpt->Cell($width_separator,$col_heider_height,null,0,0,'C',true);
 
 	    $pdfOpt->SetFillColor(4,82,127);
 	    $x_tanggal_cetak = $pdfOpt->GetX();
@@ -407,23 +341,7 @@ class RekapLainController extends Controller
 	    $pdfOpt->SetFillColor(255,255,255);
 	    $pdfOpt->Cell($width_separator,$col_heider_height,null,0,0,'C',true);
 
-	 //    $pdfOpt->SetFillColor(0,0,0);
-		// $x_nomor_voucher = $pdfOpt->GetX();
-	 //    $y_nomor_voucher = $pdfOpt->GetY();
-	 //    if($pdfOpt->GetStringWidth('NOMOR VOUCHER') > $width_nomor_voucher){
-		//     $pdfOpt->Cell($width_nomor_voucher,$col_heider_height,null,0,0,'C',true);
-		//     $pdfOpt->SetXY($x_nomor_voucher,$y_nomor_voucher+2);
-	 //    	$pdfOpt->MultiAlignCell($width_nomor_voucher,$col_heider_height/2-2,'NOMOR VOUCHER',0,0,'C',true);
-		//     $pdfOpt->SetXY($pdfOpt->GetX(),$y_nomor_voucher);
-	    	
-	 //    }else{
-	 //    	$pdfOpt->Cell($width_nomor_voucher,$col_heider_height,'NOMOR VOUCHER',0,0,'C',true);
-	 //    }
-
-	    // $pdfOpt->SetFillColor(255,255,255);
-	    // $pdfOpt->Cell($width_separator,$col_heider_height,null,0,0,'C',true);
-
-	    $pdfOpt->SetFillColor(0,0,0);
+		$pdfOpt->SetFillColor(0,0,0);
 	    $pdfOpt->Cell($width_harga_satuan,$col_heider_height,'HARGA SATUAN',0,0,'C',true);
 	    $pdfOpt->SetFillColor(255,255,255);
 	    $pdfOpt->Cell($width_separator,$col_heider_height,null,0,0,'C',true);
@@ -453,10 +371,6 @@ class RekapLainController extends Controller
 	    $pdfOpt->SetFillColor(255,255,255);
 	    $pdfOpt->Cell($width_separator,1,null,0,0,'C',true);
 
-	    // $pdfOpt->SetFillColor(4,82,127);
-	    // $pdfOpt->Cell($width_kode_pemesanan,1,null,0,0,'C',true);
-	    // $pdfOpt->SetFillColor(255,255,255);
-	    // $pdfOpt->Cell($width_separator,1,null,0,0,'C',true);
 
 	    $pdfOpt->SetFillColor(4,82,127);
 	    $pdfOpt->Cell($width_tanggal_cetak,1,null,0,0,'C',true);
@@ -468,8 +382,6 @@ class RekapLainController extends Controller
 	    $pdfOpt->Cell($content_width,1,null,0,2,'C',true);
 
 	    // -------------------------------------------------------
-
-
 
 	    // TABLE CONTENT
 	    $pdfOpt->SetX(8 );
@@ -523,23 +435,9 @@ class RekapLainController extends Controller
                         $pdfOpt->SetXY(8+$width_no+$width_nomor_invoice + $width_tanggal_cetak+3,$y_per_row_tamu);
 
                         $keterangan = $dpg->keterangan;
-      //                   $jml_line = $pdfOpt->GetMultiCellHeight($width_keterangan,$col_height,$keterangan);
-
-      //                   while($jml_line > ($col_height*2) ) {
-						// 	 $nama_tamu =substr_replace($keterangan, '', -1);
-						// 	 $jml_line = $pdfOpt->GetMultiCellHeight($width_keterangan,$col_height,$keterangan);
-						// }
-						
-
-                        // if($pdfOpt->GetStringWidth($keterangan) > $width_keterangan){
-                        // 	// cetak dua baris
-                        // 	$pdfOpt->MultiAlignCell($width_keterangan,$col_height/2,$keterangan  ,0,0,'L',false);
-                        // 	$pdfOpt->Cell($width_separator,$col_height,null,0,0,'C',false);
-                        // }else{
                         	$pdfOpt->Cell($width_keterangan,$col_height,$keterangan,0,0,'L',false);
                         	$pdfOpt->Cell($width_separator,$col_height,null,0,0,'C',false);
-                        	
-                        // }
+                      
 
                         
                     	$pdfOpt->Cell(3,$col_height,'Rp.',0,0,'L',false);
@@ -600,6 +498,16 @@ class RekapLainController extends Controller
 	    $pdfOpt->Cell($width_subtotal + $width_total + 2 , $subtotal_height ,'Rp. ' . number_format($subtotal_harga,2,',','.'),0,2,'C',true );
         // END OF TOTAL
 
+        // TERBILANG
+	    $pdfOpt->Ln(5);
+	    $pdfOpt->SetX(8);
+	    $pdfOpt->SetFont('Arial', 'B', 8);
+	    $pdfOpt->SetTextColor(255,255,255);
+	    $terbilang =  strtoupper(convertTerbilang($subtotal_harga) . ' Rupiah');
+	    $pdfOpt->SetFillColor(145,145,145);
+	    $pdfOpt->Cell($pdfOpt->GetPageWidth()-16, 5,'   '.$terbilang,0,0,'L',true );
+	    // END OF TERBILANG
+
         // ---- FOOOTER ----------
 	    // $pdfOpt->Cell(10, 0,null,0,0,'C',false );
 	    $catatan_1 = \DB::table('appsetting')->whereName('inv_catatan_1')->first()->value;
@@ -622,8 +530,9 @@ class RekapLainController extends Controller
 	    $pdfOpt->SetFont('Arial', null, 8);
 	    $pdfOpt->Cell($footer_left_width*2,$catatan_height,'Dicetak oleh,',0,2,'R',false );
 
-	    $pdfOpt->SetFont('Arial', null, 6);
+	    $pdfOpt->SetFont('Arial', 'BU', 6);
 	    $pdfOpt->Cell($footer_left_width,$catatan_height,$catatan_1,0,2,'L',false );
+	    $pdfOpt->SetFont('Arial', null, 6);
 	    $pdfOpt->Cell($footer_left_width,$catatan_height,$catatan_2,0,2,'L',false );
 	    $pdfOpt->Cell($footer_left_width,$catatan_height,$catatan_3,0,2,'L',false );
 	    $pdfOpt->Cell($footer_left_width,$catatan_height,$catatan_4,0,2,'L',false );

@@ -60,7 +60,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        Rekapitulasi Data Pemesanan Hotel 
+        Rekapitulasi Data Pemesanan Lain 
     </h1>
 </section>
 
@@ -179,8 +179,11 @@
                                         <td class="text-right uang {{$oddeven}}">
                                             {{$dpg->harga_satuan}}
                                         </td>
+                                        <td class=" {{$oddeven}}" >
+                                            {{$dpg->jumlah}}
+                                        </td>
 
-                                        @if(count($dt->data_detail) > 1)
+                                        {{-- @if(count($dt->data_detail) > 1)
                                             @if($rowpg == 1)                                
                                                 <td rowspan="{{count($dt->data_detail)}}" class="{{$oddeven}}">
                                                     {{$dpg->jumlah}}
@@ -191,7 +194,7 @@
                                                 {{$dpg->jumlah}}
                                             </td>
                                         @endif
-
+ --}}
                                         @if(count($dt->data_detail) > 1)
                                             @if($rowpg == 1)
                                                 <td rowspan="{{count($dt->data_detail)}}" class="text-right uang {{$oddeven}}">

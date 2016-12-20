@@ -5,7 +5,7 @@
         <meta charset="utf-8">
             <meta content="IE=edge" http-equiv="X-UA-Compatible">
                 <title>
-                    Baja Agung APP
+                    FinApp
                 </title>
                 <!-- Tell the browser to be responsive to screen width -->
                 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">

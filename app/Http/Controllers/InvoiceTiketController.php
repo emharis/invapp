@@ -327,45 +327,44 @@ public function cetakKwitansi($invoice_id){
 		$kodepos = \DB::table('appsetting')->whereName('kodepos')->first()->value;	    
 		$telp = \DB::table('appsetting')->whereName('telp')->first()->value;	    
 		$email = \DB::table('appsetting')->whereName('email')->first()->value;	    
+		$fax = \DB::table('appsetting')->whereName('fax')->first()->value;	    
+		$website = \DB::table('appsetting')->whereName('website')->first()->value;	    
 
 		$pdfKw = new \Codedge\Fpdf\Fpdf\FPDF('L','mm',array(210,99));
 		$pdfKw->AddPage();
 		$pdfKw->SetMargins(0,0,0);
 		$pdfKw->SetAutoPageBreak(true,0);
 
-		$pdfKw->SetXY(8,5);
-		// image logo
-		$pdfKw->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,8,5,50);
-	    
-		// generate header
-	    $pdfKw->SetFont('Arial', 'B', 8);
-	    $pdfKw->Cell(55, 4,null,0,0,'L',false );
-	    $pdfKw->Cell(50, 4,$company_name,0,2,'L',false );
-	    $y = $pdfKw->GetY();
-	    $pdfKw->SetFont('Arial', null, 8);
-	    $pdfKw->SetTextColor(0,0,0);
-	    $pdfKw->Cell(50, 4,$alamat,0,2,'L',false );
-	    $x = 0;
-    		
-	    // $pdfKw->Cell(50, 4,$kecamatan . ', ' . $kabupaten .' ' . $kodepos ,0,2,'L',false );
-	    $pdfKw->Cell(50, 4,$alamat_2 ,0,2,'L',false );
-	    $pdfKw->Cell(50, 4,'T. ' . $telp .' | ' . 'E. ' . $email ,0,2,'L',false );
-	    $y_for_line_under_header = $pdfKw->GetY();
+		$pdfKw->SetXY(8,8);
+		// // image logo
+		// $pdfKw->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,8,9,45);	    
+	 //    $pdfKw->SetX(55);
+		// $pdfKw->SetFont('Arial', 'B', 8);
+	 //    $pdfKw->Cell(50, 4,$company_name,0,2,'L',false );
+	 //    $y = $pdfKw->GetY();
+	 //    $pdfKw->SetFont('Arial', null, 8);
+	 //    $pdfKw->SetTextColor(0,0,0);
+	 //    $pdfKw->Cell(50, 4,$alamat,0,2,'L',false );
+	 //    $x = 0;
+	 //    $pdfKw->Cell(50, 4,$alamat_2 ,0,2,'L',false );
+	 //    $pdfKw->Cell(50, 4,'T. ' . $telp .' | ' . 'E. ' . $email ,0,2,'L',false );
 
-	    // KWITANSI TITEL
-	    $pdfKw->SetTextColor(4,82,127);
-	    $pdfKw->SetFont('Arial', 'B', 25);
-	    // $pdfKw->Cell(110, 15,null,0,0,'L',false );
-	    // $pdfKw->SetXY(0,$y);
-	    // $pdfKw->Cell(0,10,'KWITANSI     ',0,2,'R',false );
-	    $pdfKw->SetXY(10,$y);
-	    $pdfKw->Cell($pdfKw->GetPageWidth()-15,10,'KWITANSI',0,2,'R',false );
 
-	    // LINE
-	    $pdfKw->SetXY(8,$y_for_line_under_header+5);
-	    $pdfKw->SetDrawColor(82,82,86);
-	    $pdfKw->Cell(195,1,null,'B',2,'L',false);
-	    // $pdfKw->Cell(0,1,null,'B',2,'L',false);
+	 //    $y_for_line_under_header = $pdfKw->GetY()-3;
+
+	 //    // KWITANSI TITEL
+	 //    $pdfKw->SetTextColor(4,82,127);
+	 //    $pdfKw->SetFont('Arial', 'B', 25);
+	 //    $pdfKw->SetXY(10,$y);
+	 //    $pdfKw->Cell($pdfKw->GetPageWidth()-15,10,'KWITANSI',0,2,'R',false );
+
+	 //    // LINE
+	 //    $pdfKw->SetXY(8,$y_for_line_under_header+5);
+	 //    $pdfKw->SetDrawColor(82,82,86);
+	 //    $pdfKw->Cell(195,1,null,'B',2,'L',false);
+	 //    // $pdfKw->Cell(0,1,null,'B',2,'L',false);
+
+		GeneratePdfHeader($pdfKw,'kw');
 
 	    // CONTENT
 		
@@ -384,7 +383,7 @@ public function cetakKwitansi($invoice_id){
 	    $pdfKw->SetXY($x,$y+1);
 	    $pdfKw->Cell(0,5,'................................................................',0,2,'L',false);
 
-	    $pdfKw->Ln(3);
+	    $pdfKw->Ln(2);
 
 	    $pdfKw->SetX(10);
 		$pdfKw->SetFont('Courier', 'B', 10);
@@ -416,7 +415,7 @@ public function cetakKwitansi($invoice_id){
 	    // 	$pdfKw->Cell(0,5,'................................................................',0,2,'L',false);
 	    // }
 
-	    $pdfKw->Ln(3);
+	    $pdfKw->Ln(2);
 
 	    $pdfKw->SetX(10);
 	    $pdfKw->SetTextColor(0,0,0);
@@ -473,7 +472,7 @@ public function cetakKwitansi($invoice_id){
 	    		// $pdfKw->Cell(91,$col_height_catatan,\DB::table('appsetting')->whereName('kwitansi_kota')->first()->value . ', ' .$data_invoice->tgl_cetak_formatted,0,2,'R',false);
 	    
 
-	    $pdfKw->SetFont('Arial', null, 6);
+	    $pdfKw->SetFont('Arial', 'BU', 6);
 	    $pdfKw->SetX(8);
 	    $pdfKw->Cell($col_width,$col_height_catatan,$catatan_1,0,2,'L',false);	    		
 	    $pdfKw->SetFont('Arial', null, 6);
@@ -493,7 +492,7 @@ public function cetakKwitansi($invoice_id){
 	    $pdfKw->SetXY($col_width,$y_catatan + 2);
 	    $pdfKw->SetFont('Arial', null, 8);
 		// $pdfKw->Cell($col_width,$col_height_catatan,null,0,0,'L',false);	    		
-		$pdfKw->Cell($col_width-6,$col_height_catatan,\DB::table('appsetting')->whereName('kwitansi_kota')->first()->value . ', ' .$data_invoice->tgl_cetak_formatted,0,2,'R',false);
+		$pdfKw->Cell($col_width-6,$col_height_catatan,\DB::table('appsetting')->whereName('kwitansi_kota')->first()->value . ', ' .FormatTanggal($data_invoice->tgl_cetak_formatted),0,2,'R',false);
 
 		$pdfKw->Ln(18);
 
@@ -532,136 +531,139 @@ public function cetakInvoice($invoice_id){
 		$kodepos = \DB::table('appsetting')->whereName('kodepos')->first()->value;	    
 		$telp = \DB::table('appsetting')->whereName('telp')->first()->value;	    
 		$email = \DB::table('appsetting')->whereName('email')->first()->value;	    
+		$fax = \DB::table('appsetting')->whereName('fax')->first()->value;	    
+		$website = \DB::table('appsetting')->whereName('website')->first()->value;	    
 
-		// $pdfTiket = new \Codedge\Fpdf\Fpdf\FPDF('L','mm',array(210,99));
-		$pdfTiket = new \Codedge\Fpdf\Fpdf\FPDF();
-		$pdfTiket->AddPage();
-		$pdfTiket->setMargins(0,0,0);
-		$pdfTiket->SetAutoPageBreak(true,0);
+		// $pdfInv = new \Codedge\Fpdf\Fpdf\FPDF('L','mm',array(210,99));
+		$pdfInv = new \Codedge\Fpdf\Fpdf\FPDF();
+		$pdfInv->AddPage();
+		$pdfInv->setMargins(0,0,0);
+		$pdfInv->SetAutoPageBreak(true,0);
 
 		// // image logo
-		// $pdfTiket->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,10,10,50);
+		// $pdfInv->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,10,10,50);
 	    
 		// // ------- header invoice -----------
-	 //    $pdfTiket->SetFont('Arial', 'B', 8);
-	 //    $pdfTiket->Cell(60, 4,null,0,0,'L',false );
-	 //    $pdfTiket->Cell(50, 4,$company_name,0,2,'L',false );
-	 //    $pdfTiket->SetFont('Arial', null, 8);
-	 //    $pdfTiket->SetTextColor(0,0,0);
-	 //    $y = $pdfTiket->GetY();
-	 //    $pdfTiket->Cell(50, 4,$alamat,0,2,'L',false );
+	 //    $pdfInv->SetFont('Arial', 'B', 8);
+	 //    $pdfInv->Cell(60, 4,null,0,0,'L',false );
+	 //    $pdfInv->Cell(50, 4,$company_name,0,2,'L',false );
+	 //    $pdfInv->SetFont('Arial', null, 8);
+	 //    $pdfInv->SetTextColor(0,0,0);
+	 //    $y = $pdfInv->GetY();
+	 //    $pdfInv->Cell(50, 4,$alamat,0,2,'L',false );
 	 //    $x = 0;
-	 //    $pdfTiket->Cell(50, 4,$alamat_2 ,0,2,'L',false );
-	 //    $pdfTiket->Cell(50, 4,'T. ' . $telp .' | ' . 'E. ' . $email ,0,2,'L',false );
+	 //    $pdfInv->Cell(50, 4,$alamat_2 ,0,2,'L',false );
+	 //    $pdfInv->Cell(50, 4,'T. ' . $telp .' | ' . 'E. ' . $email ,0,2,'L',false );
 
 
 	 //    // INVOICE TITEL
-	 //    $pdfTiket->SetXY(165,$y);
-	 //    $pdfTiket->SetTextColor(4,82,127);
-	 //    $pdfTiket->SetFont('Arial', 'B', 25);
-	 //    // $pdfTiket->Cell(110, 15,null,0,0,'L',false );
-	 //    $pdfTiket->Cell(130,8,'INVOICE',0,0,'L',false );
+	 //    $pdfInv->SetXY(165,$y);
+	 //    $pdfInv->SetTextColor(4,82,127);
+	 //    $pdfInv->SetFont('Arial', 'B', 25);
+	 //    // $pdfInv->Cell(110, 15,null,0,0,'L',false );
+	 //    $pdfInv->Cell(130,8,'INVOICE',0,0,'L',false );
 	    
 	 //    // ------ end header invoice ------------
 
 
 		// ------- HEADER INVOICE ----------------
-	    $pdfTiket->SetXY(8,5);
-		// image logo
-		$pdfTiket->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,8,5,50);
-		// header text
-	    $pdfTiket->SetFont('Arial', 'B', 8);
-	    $pdfTiket->Cell(55, 4,null,0,0,'L',false );
-	    $pdfTiket->Cell(50, 4,$company_name,0,2,'L',false );
-	    $y = $pdfTiket->GetY();
-	    $pdfTiket->SetFont('Arial', null, 8);
-	    $pdfTiket->SetTextColor(0,0,0);
-	    $pdfTiket->Cell(50, 4,$alamat,0,2,'L',false );
-	    $x = 0;
-	    $pdfTiket->Cell(50, 4,$alamat_2 ,0,2,'L',false );
-	    $pdfTiket->Cell(50, 4,'T. ' . $telp .' | ' . 'E. ' . $email ,0,2,'L',false );
-	    $y_for_line_under_header = $pdfTiket->GetY();
+	    $pdfInv->SetXY(8,8);
+		
+		// // image logo
+		// $pdfInv->image('img/' . \DB::table('appsetting')->whereName('logo')->first()->value,8,9,45);    
+	 //    $pdfInv->SetX(55);
+		// $pdfInv->SetFont('Arial', 'B', 8);
+	 //    $pdfInv->Cell(50, 4,$company_name,0,2,'L',false );
+	 //    $y = $pdfInv->GetY();
+	 //    $pdfInv->SetFont('Arial', null, 8);
+	 //    $pdfInv->SetTextColor(0,0,0);
+	 //    $pdfInv->Cell(50, 4,$alamat,0,2,'L',false );
+	 //    $x = 0;
+	 //    $pdfInv->Cell(50, 4,$alamat_2 ,0,2,'L',false );
+	 //    $pdfInv->Cell(50, 4,'T. ' . $telp .' | ' . 'E. ' . $email ,0,2,'L',false );
+	 //    $y_for_line_under_header = $pdfInv->GetY();
 	    
-	    // INVOICE TITEL
-	    $pdfTiket->SetTextColor(4,82,127);
-	    $pdfTiket->SetFont('Arial', 'B', 25);
-	    // $pdfTiket->SetXY(0,$y);
-	    // $pdfTiket->Cell(0,10,'INVOICE     ',0,2,'R',false );
-	    $pdfTiket->SetXY(7,$y);
-	    $pdfTiket->Cell($pdfTiket->GetPageWidth()-14,10,'INVOICE',0,2,'R',false );
+	 //    // INVOICE TITEL
+	 //    $pdfInv->SetTextColor(4,82,127);
+	 //    $pdfInv->SetFont('Arial', 'B', 25);
+	 //    // $pdfInv->SetXY(0,$y);
+	 //    // $pdfInv->Cell(0,10,'INVOICE     ',0,2,'R',false );
+	 //    $pdfInv->SetXY(7,$y);
+	 //    $pdfInv->Cell($pdfInv->GetPageWidth()-14,10,'INVOICE',0,2,'R',false );
+	    GeneratePdfHeader($pdfInv,'inv');
 	    // ---------- END HEADER INVOICE ---------------
 
 
 	    // -------- DICETAK OLEH DAN UNTUK ---------------
 
-	    $pdfTiket->Ln(10);
-	    $pdfTiket->SetX(7);
+	    $pdfInv->Ln(10);
+	    $pdfInv->SetX(7);
 	    // INVOICE DI BUAT OLEH
-	    $pdfTiket->SetTextColor(0,0,0);
-	    $pdfTiket->SetFont('Arial', 'B', 8);
-	    // $pdfTiket->Cell(10, 4,null,0,0,'L',false );
+	    $pdfInv->SetTextColor(0,0,0);
+	    $pdfInv->SetFont('Arial', 'B', 8);
+	    // $pdfInv->Cell(10, 4,null,0,0,'L',false );
 	    
-    	$y = $pdfTiket->GetY();
-    	$pdfTiket->SetTextColor(4,82,127);
-    	$pdfTiket->SetFont('Arial', 'B', 22);
-	    $pdfTiket->Cell(25, 8,$data_invoice->inv_num,0,2,'L',false );
+    	$y = $pdfInv->GetY();
+    	$pdfInv->SetTextColor(4,82,127);
+    	$pdfInv->SetFont('Arial', 'B', 22);
+	    $pdfInv->Cell(25, 8,$data_invoice->inv_num,0,2,'L',false );
 
-	    $pdfTiket->SetX(7);
-	    $pdfTiket->SetFont('Arial', 'B', 8);
-	    $pdfTiket->SetTextColor(0,0,0);
-	    $pdfTiket->Cell(30, 4,'Dicetak oleh',0,0,'L',false );
-	    $pdfTiket->Cell(2, 4,':',0,2,'L',false );
-	    // $pdfTiket->Ln();
+	    $pdfInv->SetX(7);
+	    $pdfInv->SetFont('Arial', 'B', 8);
+	    $pdfInv->SetTextColor(0,0,0);
+	    $pdfInv->Cell(30, 4,'Dicetak oleh',0,0,'L',false );
+	    $pdfInv->Cell(2, 4,':',0,2,'L',false );
+	    // $pdfInv->Ln();
 
-	    $pdfTiket->SetX(7);
-	    $pdfTiket->Cell(30, 4,'Tanggal Cetak',0,0,'L',false );
-	    $pdfTiket->Cell(2, 4,':',0,2,'L',false );
-	    // $pdfTiket->Ln();
+	    $pdfInv->SetX(7);
+	    $pdfInv->Cell(30, 4,'Tanggal Cetak',0,0,'L',false );
+	    $pdfInv->Cell(2, 4,':',0,2,'L',false );
+	    // $pdfInv->Ln();
 
-	    $pdfTiket->SetX(7);
-	    $pdfTiket->Cell(30, 4,'Tanggal Jatuh Tempo',0,0,'L',false );
-	    $pdfTiket->Cell(2, 4,':',0,0,'L',false );
-	    $x = $pdfTiket->GetX();
+	    $pdfInv->SetX(7);
+	    $pdfInv->Cell(30, 4,'Tanggal Jatuh Tempo',0,0,'L',false );
+	    $pdfInv->Cell(2, 4,':',0,0,'L',false );
+	    $x = $pdfInv->GetX();
 
-	    $pdfTiket->SetXY($x,$y);
-	    $pdfTiket->SetTextColor(4,82,127);
-	    $pdfTiket->Cell(60, 4,'',0,2,'L',false );
-	    $pdfTiket->Ln();
-	    $pdfTiket->SetX($x);
-	    $pdfTiket->SetFont('Arial', null, 8);
-	    $pdfTiket->SetTextColor(0,0,0);
-	    $pdfTiket->Cell(60, 4,\DB::table('users')->find($data_invoice->user_id)->name,0,2,'L',false );
-	    $pdfTiket->Cell(60, 4,$data_invoice->tgl_cetak_formatted,0,2,'L',false );
-	    $pdfTiket->Cell(60, 4,$data_invoice->jatuh_tempo_formatted,0,2,'L',false );
-	    $x = $pdfTiket->GetX();
+	    $pdfInv->SetXY($x,$y);
+	    $pdfInv->SetTextColor(4,82,127);
+	    $pdfInv->Cell(60, 4,'',0,2,'L',false );
+	    $pdfInv->Ln();
+	    $pdfInv->SetX($x);
+	    $pdfInv->SetFont('Arial', null, 8);
+	    $pdfInv->SetTextColor(0,0,0);
+	    $pdfInv->Cell(60, 4,\DB::table('users')->find($data_invoice->user_id)->name,0,2,'L',false );
+	    $pdfInv->Cell(60, 4,FormatTanggal($data_invoice->tgl_cetak_formatted),0,2,'L',false );
+	    $pdfInv->Cell(60, 4,FormatTanggal($data_invoice->jatuh_tempo_formatted),0,2,'L',false );
+	    $x = $pdfInv->GetX();
 
 	    // invoice untuk
-	    $pdfTiket->SetXY($x+45,$y);
-	    $pdfTiket->SetFont('Arial', 'B', 8);
-	    $pdfTiket->Cell(30, 4,'Nama',0,0,'L',false );
-	    $pdfTiket->Cell(2, 4,':',0,2,'L',false );
-	    $pdfTiket->SetX($x+45);
-	    $pdfTiket->Cell(30, 4,'Kantor/Perusahaan',0,0,'L',false );
-	    $pdfTiket->Cell(2, 4,':',0,2,'L',false );
-	    $pdfTiket->SetX($x+45);
-	    $pdfTiket->Cell(30, 4,'Alamat',0,0,'L',false );
-	    $pdfTiket->Cell(2, 4,':',0,2,'L',false );
-	    $pdfTiket->SetX($x+45);
-	    $pdfTiket->Cell(30, 4,'Telepon',0,0,'L',false );
-	    $pdfTiket->Cell(2, 4,':',0,2,'L',false );
-	    $pdfTiket->SetX($x+45);
-	    $pdfTiket->Cell(30, 4,'E-Mail',0,0,'L',false );
-	    $pdfTiket->Cell(2, 4,':',0,2,'L',false );
-	    $x = $pdfTiket->GetX();
+	    $pdfInv->SetXY($x+45,$y);
+	    $pdfInv->SetFont('Arial', 'B', 8);
+	    $pdfInv->Cell(30, 4,'Nama',0,0,'L',false );
+	    $pdfInv->Cell(2, 4,':',0,2,'L',false );
+	    $pdfInv->SetX($x+45);
+	    $pdfInv->Cell(30, 4,'Kantor/Perusahaan',0,0,'L',false );
+	    $pdfInv->Cell(2, 4,':',0,2,'L',false );
+	    $pdfInv->SetX($x+45);
+	    $pdfInv->Cell(30, 4,'Alamat',0,0,'L',false );
+	    $pdfInv->Cell(2, 4,':',0,2,'L',false );
+	    $pdfInv->SetX($x+45);
+	    $pdfInv->Cell(30, 4,'Telepon',0,0,'L',false );
+	    $pdfInv->Cell(2, 4,':',0,2,'L',false );
+	    $pdfInv->SetX($x+45);
+	    $pdfInv->Cell(30, 4,'E-Mail',0,0,'L',false );
+	    $pdfInv->Cell(2, 4,':',0,2,'L',false );
+	    $x = $pdfInv->GetX();
 
-	    $pdfTiket->SetXY($x+2,$y);
-	    $pdfTiket->SetFont('Arial', null, 8);
-	    $pdfTiket->Cell(30, 4,$data_invoice->nama,0,2,'L',false );
-	    $pdfTiket->Cell(30, 4,$data_invoice->kantor,0,2,'L',false );
-	    $pdfTiket->Cell(30, 4,$data_invoice->alamat,0,2,'L',false );
-	    $pdfTiket->Cell(30, 4,$data_invoice->telp,0,2,'L',false );
-	    $pdfTiket->Cell(30, 4,$data_invoice->email,0,2,'L',false );
-	    $x = $pdfTiket->GetX();
+	    $pdfInv->SetXY($x+2,$y);
+	    $pdfInv->SetFont('Arial', null, 8);
+	    $pdfInv->Cell(30, 4,$data_invoice->nama,0,2,'L',false );
+	    $pdfInv->Cell(30, 4,$data_invoice->kantor,0,2,'L',false );
+	    $pdfInv->Cell(30, 4,$data_invoice->alamat,0,2,'L',false );
+	    $pdfInv->Cell(30, 4,$data_invoice->telp,0,2,'L',false );
+	    $pdfInv->Cell(30, 4,$data_invoice->email,0,2,'L',false );
+	    $x = $pdfInv->GetX();
 
 	    // ---------- END DICETAK OLEH DAN UNTUK ----------------
 
@@ -680,193 +682,193 @@ public function cetakInvoice($invoice_id){
 	    $col_height_other = 9;
 	    
 
-	    $pdfTiket->Ln(5);
-	    $pdfTiket->SetX(8);
-	    $pdfTiket->SetFont('Arial', 'B', 7);
-	    // $pdfTiket->Cell(10, 12,null,0,0,'L',false );
-		$pdfTiket->SetFillColor(0,0,0);
-		$pdfTiket->SetTextColor(255,255,255);
-	    $pdfTiket->Cell($width_no, $col_height_other,'NO',0,0,'C',true );
+	    $pdfInv->Ln(5);
+	    $pdfInv->SetX(8);
+	    $pdfInv->SetFont('Arial', 'B', 7);
+	    // $pdfInv->Cell(10, 12,null,0,0,'L',false );
+		$pdfInv->SetFillColor(0,0,0);
+		$pdfInv->SetTextColor(255,255,255);
+	    $pdfInv->Cell($width_no, $col_height_other,'NO',0,0,'C',true );
 	    // --- separator ---
-	    $pdfTiket->SetFillColor(255,255,255);
-	    $pdfTiket->Cell($width_separator, $col_height*2,null,0,0,'C',true );
-	    $pdfTiket->SetFillColor(4,82,127);
+	    $pdfInv->SetFillColor(255,255,255);
+	    $pdfInv->Cell($width_separator, $col_height*2,null,0,0,'C',true );
+	    $pdfInv->SetFillColor(4,82,127);
 	    // --- end separator ---
 	    
-	    $y = $pdfTiket->GetY();
-	    $x = $pdfTiket->GetX();
-	    $pdfTiket->MultiAlignCell($width_kode_pemesanan, $col_height*2,null,0,0,'C',true );
-	    $pdfTiket->SetXY($x,$y+2);
-	    $pdfTiket->MultiAlignCell($width_kode_pemesanan, $col_height-2,'KODE PEMESANAN',0,0,'C',true );
-	    $pdfTiket->SetXY($pdfTiket->GetX(),$y);
+	    $y = $pdfInv->GetY();
+	    $x = $pdfInv->GetX();
+	    $pdfInv->MultiAlignCell($width_kode_pemesanan, $col_height*2,null,0,0,'C',true );
+	    $pdfInv->SetXY($x,$y+2);
+	    $pdfInv->MultiAlignCell($width_kode_pemesanan, $col_height-2,'KODE PEMESANAN',0,0,'C',true );
+	    $pdfInv->SetXY($pdfInv->GetX(),$y);
 
-	    // $pdfTiket->MultiAlignCell($width_kode_pemesanan, $col_height,'KODE PEMESANAN',0,0,'C',true );
+	    // $pdfInv->MultiAlignCell($width_kode_pemesanan, $col_height,'KODE PEMESANAN',0,0,'C',true );
 	     // --- separator ---
-	    $pdfTiket->SetFillColor(255,255,255);
-	    $pdfTiket->Cell($width_separator, $col_height*2,null,0,0,'C',true );
-	    $pdfTiket->SetFillColor(4,82,127);
+	    $pdfInv->SetFillColor(255,255,255);
+	    $pdfInv->Cell($width_separator, $col_height*2,null,0,0,'C',true );
+	    $pdfInv->SetFillColor(4,82,127);
 	    // --- end separator ---
-	    $pdfTiket->Cell($width_maskapai, $col_height*2,'MASKAPAI',0,0,'C',true );
+	    $pdfInv->Cell($width_maskapai, $col_height*2,'MASKAPAI',0,0,'C',true );
 	     // --- separator ---
-	    $pdfTiket->SetFillColor(255,255,255);
-	    $pdfTiket->Cell($width_separator, $col_height*2,null,0,0,'C',true );
-	    $pdfTiket->SetFillColor(4,82,127);
+	    $pdfInv->SetFillColor(255,255,255);
+	    $pdfInv->Cell($width_separator, $col_height*2,null,0,0,'C',true );
+	    $pdfInv->SetFillColor(4,82,127);
 	    // --- end separator ---
-	    $pdfTiket->Cell($width_rute, $col_height*2,'RUTE',0,0,'C',true );
+	    $pdfInv->Cell($width_rute, $col_height*2,'RUTE',0,0,'C',true );
 	     // --- separator ---
-	    $pdfTiket->SetFillColor(255,255,255);
-	    $pdfTiket->Cell($width_separator, $col_height_other,null,0,0,'C',true );
-	    $pdfTiket->SetFillColor(0,0,0);
+	    $pdfInv->SetFillColor(255,255,255);
+	    $pdfInv->Cell($width_separator, $col_height_other,null,0,0,'C',true );
+	    $pdfInv->SetFillColor(0,0,0);
 	    // --- end separator ---
-	    // $pdfTiket->Cell($width_titel, $col_height_other,'TITEL',0,0,'C',true );
+	    // $pdfInv->Cell($width_titel, $col_height_other,'TITEL',0,0,'C',true );
 	     // --- separator ---
-	    // $pdfTiket->SetFillColor(255,255,255);
-	    // $pdfTiket->Cell($width_separator, $col_height_other,null,0,0,'C',true );
-	    // $pdfTiket->SetFillColor(0,0,0);
+	    // $pdfInv->SetFillColor(255,255,255);
+	    // $pdfInv->Cell($width_separator, $col_height_other,null,0,0,'C',true );
+	    // $pdfInv->SetFillColor(0,0,0);
 	    // --- end separator ---
-	    $pdfTiket->Cell($width_nama + $width_titel + 1, $col_height_other,'NAMA PENUMPANG',0,0,'C',true );
+	    $pdfInv->Cell($width_nama + $width_titel + 1, $col_height_other,'NAMA PENUMPANG',0,0,'C',true );
 	     // --- separator ---
-	    $pdfTiket->SetFillColor(255,255,255);
-	    $pdfTiket->Cell($width_separator, $col_height_other,null,0,0,'C',true );
-	    $pdfTiket->SetFillColor(0,0,0);
+	    $pdfInv->SetFillColor(255,255,255);
+	    $pdfInv->Cell($width_separator, $col_height_other,null,0,0,'C',true );
+	    $pdfInv->SetFillColor(0,0,0);
 	    // --- end separator ---
-	    $pdfTiket->Cell($width_nomor_tiket, $col_height_other,'NOMOR TIKET',0,0,'C',true );
+	    $pdfInv->Cell($width_nomor_tiket, $col_height_other,'NOMOR TIKET',0,0,'C',true );
 	     // --- separator ---
-	    $pdfTiket->SetFillColor(255,255,255);
-	    $pdfTiket->Cell($width_separator, $col_height_other,null,0,0,'C',true );
-	    $pdfTiket->SetFillColor(0,0,0);
+	    $pdfInv->SetFillColor(255,255,255);
+	    $pdfInv->Cell($width_separator, $col_height_other,null,0,0,'C',true );
+	    $pdfInv->SetFillColor(0,0,0);
 	    // --- end separator ---
-	    $pdfTiket->Cell($width_harga, $col_height_other,'HARGA',0,2,'C',true );
+	    $pdfInv->Cell($width_harga, $col_height_other,'HARGA',0,2,'C',true );
 	    // separator warna putih di bawah kolom terakhir
-	    $pdfTiket->SetFillColor(255,255,255);
-	    $pdfTiket->Cell(0, 1,null,0,0,'C',true );
+	    $pdfInv->SetFillColor(255,255,255);
+	    $pdfInv->Cell(0, 1,null,0,0,'C',true );
 	    
 	    // LINE DI BAWAH TABLE HEADER
-	    $pdfTiket->Ln();
-	    $pdfTiket->SetX(8);
-	    $pdfTiket->SetFillColor(4,82,127);
-	    $pdfTiket->Cell(194, 1,null,0,0,'C',true );
+	    $pdfInv->Ln();
+	    $pdfInv->SetX(8);
+	    $pdfInv->SetFillColor(4,82,127);
+	    $pdfInv->Cell(194, 1,null,0,0,'C',true );
 
 	    // TABLE CONTENT
-	    $pdfTiket->SetFont('Arial', null, 7);
+	    $pdfInv->SetFont('Arial', null, 7);
 	    $table_row_height = 10;
 	    $rownum=1;
-	    $pdfTiket->Ln();
-	    $pdfTiket->SetTextColor(0,0,0);
+	    $pdfInv->Ln();
+	    $pdfInv->SetTextColor(0,0,0);
 
 	    foreach($data_pemesanan as $dps){
 	    	$new_table_row_height = $table_row_height * count($dps->data_penumpang);
 	    	if($rownum== 1){
-	    		$pdfTiket->Cell(10, 12,null,0,0,'L',false );
+	    		$pdfInv->Cell(10, 12,null,0,0,'L',false );
 	    	}
 
-	    	$pdfTiket->SetX(8);
-		    $pdfTiket->Cell($width_no, $new_table_row_height,$rownum++,0,0,'C',false );
-		    $pdfTiket->Cell($width_separator, $new_table_row_height,null,0,0,'C',false );
+	    	$pdfInv->SetX(8);
+		    $pdfInv->Cell($width_no, $new_table_row_height,$rownum++,0,0,'C',false );
+		    $pdfInv->Cell($width_separator, $new_table_row_height,null,0,0,'C',false );
 
 		    if(strlen($dps->kode_pemesanan) > 16){
-			    $y = $pdfTiket->GetY();
-			    $x = $pdfTiket->GetX();
-			    $pdfTiket->SetXY($x,$y + 2);
-			    $pdfTiket->MultiAlignCell($width_kode_pemesanan,$new_table_row_height/2-2,$dps->kode_pemesanan,0,0,'C',false );
-			    $x = $pdfTiket->GetX();
-			    $y = $pdfTiket->GetY();
-			    $pdfTiket->SetXY($x,$y - 2);
+			    $y = $pdfInv->GetY();
+			    $x = $pdfInv->GetX();
+			    $pdfInv->SetXY($x,$y + 2);
+			    $pdfInv->MultiAlignCell($width_kode_pemesanan,$new_table_row_height/2-2,$dps->kode_pemesanan,0,0,'C',false );
+			    $x = $pdfInv->GetX();
+			    $y = $pdfInv->GetY();
+			    $pdfInv->SetXY($x,$y - 2);
 			}else{
-			    $pdfTiket->Cell($width_kode_pemesanan,$new_table_row_height,$dps->kode_pemesanan,0,0,'C',false );
+			    $pdfInv->Cell($width_kode_pemesanan,$new_table_row_height,$dps->kode_pemesanan,0,0,'C',false );
 			}
 
 		    
-		    $pdfTiket->Cell($width_separator, $new_table_row_height,null,0,0,'C',false );
+		    $pdfInv->Cell($width_separator, $new_table_row_height,null,0,0,'C',false );
 
 		    $maxlen_maskapai = \DB::table('appsetting')->whereName('inv_maxlen_maskapai')->first()->value;
 		    if(strlen($dps->maskapai) > $maxlen_maskapai){
-			    $y = $pdfTiket->GetY();
-			    $x = $pdfTiket->GetX();
-			    $pdfTiket->SetXY($x,$y + 2);
-			    $pdfTiket->MultiAlignCell($width_maskapai, $new_table_row_height/2-2,$dps->maskapai,0,0,'C',false );
-			    $x = $pdfTiket->GetX();
-			    $y = $pdfTiket->GetY();
-			    $pdfTiket->SetXY($x,$y - 2);
+			    $y = $pdfInv->GetY();
+			    $x = $pdfInv->GetX();
+			    $pdfInv->SetXY($x,$y + 2);
+			    $pdfInv->MultiAlignCell($width_maskapai, $new_table_row_height/2-2,$dps->maskapai,0,0,'C',false );
+			    $x = $pdfInv->GetX();
+			    $y = $pdfInv->GetY();
+			    $pdfInv->SetXY($x,$y - 2);
 			}else{
-			    $pdfTiket->Cell($width_maskapai, $new_table_row_height,$dps->maskapai,0,0,'C',false );
+			    $pdfInv->Cell($width_maskapai, $new_table_row_height,$dps->maskapai,0,0,'C',false );
 			}
 
 		    
-		    $pdfTiket->Cell($width_separator, $new_table_row_height,null,0,0,'C',false );
+		    $pdfInv->Cell($width_separator, $new_table_row_height,null,0,0,'C',false );
 
 
 		    $maxlen_rute  = $maxlen_maskapai = \DB::table('appsetting')->whereName('inv_maxlen_rute')->first()->value;
 		    $rute = $dps->pergi . ($dps->pulang != "" ? ' - ' . $dps->pulang : '');
 		    if(strlen($rute) > $maxlen_rute){
-			    $y = $pdfTiket->GetY();
-			    $x = $pdfTiket->GetX();
-			    $pdfTiket->SetXY($x,$y + 2);
-			    $pdfTiket->MultiAlignCell($width_rute, $new_table_row_height/2-2,$rute,0,0,'C',false );
-			    $x = $pdfTiket->GetX();
-			    $y = $pdfTiket->GetY();
-			    $pdfTiket->SetXY($x,$y - 2);
+			    $y = $pdfInv->GetY();
+			    $x = $pdfInv->GetX();
+			    $pdfInv->SetXY($x,$y + 2);
+			    $pdfInv->MultiAlignCell($width_rute, $new_table_row_height/2-2,$rute,0,0,'C',false );
+			    $x = $pdfInv->GetX();
+			    $y = $pdfInv->GetY();
+			    $pdfInv->SetXY($x,$y - 2);
 			}else{
-			    $pdfTiket->Cell($width_rute, $new_table_row_height,$rute,0,0,'C',false );
+			    $pdfInv->Cell($width_rute, $new_table_row_height,$rute,0,0,'C',false );
 			}
 		    
-		    $pdfTiket->Cell($width_separator, $new_table_row_height,null,0,0,'C',false );
+		    $pdfInv->Cell($width_separator, $new_table_row_height,null,0,0,'C',false );
 		    // data penumpan
 		    $dpg_idx =1;
 		    foreach($dps->data_penumpang as $dpg){
 		    	// titel
 
 		    	if($dpg_idx > 1){
-		    		$pdfTiket->Ln($table_row_height);
+		    		$pdfInv->Ln($table_row_height);
 		    		// wrapper
-		    		$pdfTiket->Cell(10, $table_row_height,null,0,0,'L',false );
-			    	$pdfTiket->Cell($width_no, $table_row_height,null,0,0,'C',false );
-			    	$pdfTiket->Cell($width_kode_pemesanan, $table_row_height,null,0,0,'C',false );
-			    	$pdfTiket->Cell($width_maskapai, $table_row_height,null,0,0,'C',false );
-			    	$pdfTiket->Cell($width_rute, $table_row_height,null,0,0,'C',false );
-			    	$pdfTiket->Cell(4, $table_row_height,null,0,0,'C',false );
+		    		$pdfInv->Cell(10, $table_row_height,null,0,0,'L',false );
+			    	$pdfInv->Cell($width_no, $table_row_height,null,0,0,'C',false );
+			    	$pdfInv->Cell($width_kode_pemesanan, $table_row_height,null,0,0,'C',false );
+			    	$pdfInv->Cell($width_maskapai, $table_row_height,null,0,0,'C',false );
+			    	$pdfInv->Cell($width_rute, $table_row_height,null,0,0,'C',false );
+			    	$pdfInv->Cell(4, $table_row_height,null,0,0,'C',false );
 		    	}
 
-		    	// $pdfTiket->Cell($width_titel, $table_row_height,strtoupper($dpg->titel),0,0,'C',false );
-		    	// $pdfTiket->Cell($width_separator, $table_row_height,null,0,0,'C',false );
+		    	// $pdfInv->Cell($width_titel, $table_row_height,strtoupper($dpg->titel),0,0,'C',false );
+		    	// $pdfInv->Cell($width_separator, $table_row_height,null,0,0,'C',false );
 		    	// nama penumpang
 		    	$maxlen_nama_penumpang = \DB::table('appsetting')->whereName('inv_maxlen_penumpang')->first()->value;
 		    	$nama = strtoupper($dpg->titel) . ' ' . $dpg->nama;
 		    	if(strlen($dpg->nama) > $maxlen_nama_penumpang){
-		    		$y = $pdfTiket->GetY();
-				    $x = $pdfTiket->GetX();
-				    $pdfTiket->SetXY($x,$y + 2);
-				    $pdfTiket->MultiAlignCell($width_nama+$width_titel + 1, $table_row_height/2-2,nama,0,0,'L',false );
-			    	$x = $pdfTiket->GetX();
-				    $y = $pdfTiket->GetY();
-				    $pdfTiket->SetXY($x,$y - 2);
+		    		$y = $pdfInv->GetY();
+				    $x = $pdfInv->GetX();
+				    $pdfInv->SetXY($x,$y + 2);
+				    $pdfInv->MultiAlignCell($width_nama+$width_titel + 1, $table_row_height/2-2,nama,0,0,'L',false );
+			    	$x = $pdfInv->GetX();
+				    $y = $pdfInv->GetY();
+				    $pdfInv->SetXY($x,$y - 2);
 		    	}else{
-		    		$pdfTiket->Cell($width_nama+$width_titel + 1, $table_row_height,$nama,0,0,'L',false );
+		    		$pdfInv->Cell($width_nama+$width_titel + 1, $table_row_height,$nama,0,0,'L',false );
 		    	}
 
 
-		    	$pdfTiket->Cell($width_separator, $table_row_height,null,0,0,'C',false );
+		    	$pdfInv->Cell($width_separator, $table_row_height,null,0,0,'C',false );
 		    	// nomor tiket
 		    	$maxlen_nomor_tiket = \DB::table('appsetting')->whereName('inv_maxlen_nomor_tiket')->first()->value;
 		    	 if(strlen($dpg->nomor_tiket) > $maxlen_nomor_tiket){
-				    $y = $pdfTiket->GetY();
-				    $x = $pdfTiket->GetX();
-				    $pdfTiket->SetXY($x,$y + 2);
-				    $pdfTiket->MultiAlignCell($width_nomor_tiket, $table_row_height/2-2,$dpg->nomor_tiket,0,0,'C',false );
-				    $x = $pdfTiket->GetX();
-				    $y = $pdfTiket->GetY();
-				    $pdfTiket->SetXY($x,$y - 2);
+				    $y = $pdfInv->GetY();
+				    $x = $pdfInv->GetX();
+				    $pdfInv->SetXY($x,$y + 2);
+				    $pdfInv->MultiAlignCell($width_nomor_tiket, $table_row_height/2-2,$dpg->nomor_tiket,0,0,'C',false );
+				    $x = $pdfInv->GetX();
+				    $y = $pdfInv->GetY();
+				    $pdfInv->SetXY($x,$y - 2);
 				}else{
-				    $pdfTiket->Cell($width_nomor_tiket, $table_row_height,$dpg->nomor_tiket,0,0,'C',false );
+				    $pdfInv->Cell($width_nomor_tiket, $table_row_height,$dpg->nomor_tiket,0,0,'C',false );
 				}
 
 		    	
-		    	$pdfTiket->Cell($width_separator, $table_row_height,null,0,0,'C',false );
+		    	$pdfInv->Cell($width_separator, $table_row_height,null,0,0,'C',false );
 		    	
 		    	if($dpg_idx == 1){
 		    		// cetak kolom harga
-		    		$pdfTiket->Cell(2, $new_table_row_height,'Rp.',0,0,'L',false );
-		    		$pdfTiket->Cell($width_harga-2, $new_table_row_height,number_format($dps->harga,2,',','.'),0,0,'R',false );
+		    		$pdfInv->Cell(2, $new_table_row_height,'Rp.',0,0,'L',false );
+		    		$pdfInv->Cell($width_harga-2, $new_table_row_height,number_format($dps->harga,2,',','.'),0,0,'R',false );
 		    	}
 		    	
 		    	$dpg_idx++;
@@ -874,46 +876,46 @@ public function cetakInvoice($invoice_id){
 		    }
 
 		    // line dibawah setiap row
-		    $pdfTiket->Ln();
-		    $pdfTiket->SetX(8);
+		    $pdfInv->Ln();
+		    $pdfInv->SetX(8);
 		    $full_row_width = $width_no+$width_kode_pemesanan+$width_maskapai+$width_rute+$width_titel+$width_nama+$width_nomor_tiket+$width_harga+7;
-		    // $pdfTiket->Cell(10, 0,null,0,0,'C',false );
-		    $pdfTiket->Cell($full_row_width, 0,null,'B',2,'C',false );
+		    // $pdfInv->Cell(10, 0,null,0,0,'C',false );
+		    $pdfInv->Cell($full_row_width, 0,null,'B',2,'C',false );
 		    
 	    }
 
 	    // TOTAL
 	    $total_height = 10;
-	    // $pdfTiket->Cell($width_separator, $total_height,null,0,2,'C',false );
-	    // $pdfTiket->Cell($width_separator, $table_row_height,null,0,2,'C',false );
-	    $pdfTiket->Ln(3);
-	    $pdfTiket->SetX(8);
-	    // $pdfTiket->Cell($width_separator, $total_height,null,0,0,'C',false );
-	    $pdfTiket->Cell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + ($width_separator*4), $total_height,null,0,0,'C',false );
-	    $pdfTiket->SetFont('Arial', 'B', 12);	    
-	    $pdfTiket->SetFillColor(4,82,127);
-	    $pdfTiket->SetTextColor(255,255,255);
-	    $pdfTiket->Cell($width_nama + $width_titel +1 , $total_height,'TOTAL',0,0,'C',true );
-	    $pdfTiket->Cell($width_nomor_tiket + $width_harga +2, $total_height ,'Rp. ' . number_format($data_invoice->total,2,',','.'),0,0,'C',true );
+	    // $pdfInv->Cell($width_separator, $total_height,null,0,2,'C',false );
+	    // $pdfInv->Cell($width_separator, $table_row_height,null,0,2,'C',false );
+	    $pdfInv->Ln(3);
+	    $pdfInv->SetX(8);
+	    // $pdfInv->Cell($width_separator, $total_height,null,0,0,'C',false );
+	    $pdfInv->Cell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + ($width_separator*4), $total_height,null,0,0,'C',false );
+	    $pdfInv->SetFont('Arial', 'B', 12);	    
+	    $pdfInv->SetFillColor(4,82,127);
+	    $pdfInv->SetTextColor(255,255,255);
+	    $pdfInv->Cell($width_nama + $width_titel +1 , $total_height,'TOTAL',0,0,'C',true );
+	    $pdfInv->Cell($width_nomor_tiket + $width_harga +2, $total_height ,'Rp. ' . number_format($data_invoice->total,2,',','.'),0,0,'C',true );
 
 	    // terbilang
-	    $pdfTiket->Ln();
-	    $pdfTiket->Ln(2);
-	    $pdfTiket->SetX(8);
-	    $pdfTiket->SetFont('Arial', 'B', 8);
-	    $pdfTiket->SetTextColor(255,255,255);
-	    // $pdfTiket->Cell(10, 0,null,0,0,'C',false );
+	    $pdfInv->Ln();
+	    $pdfInv->Ln(2);
+	    $pdfInv->SetX(8);
+	    $pdfInv->SetFont('Arial', 'B', 8);
+	    $pdfInv->SetTextColor(255,255,255);
+	    // $pdfInv->Cell(10, 0,null,0,0,'C',false );
 	    $terbilang =  strtoupper($data_invoice->terbilang . ' Rupiah');
-	    $pdfTiket->SetFillColor(145,145,145);
-	    $pdfTiket->Cell($full_row_width, 5,'   '.$terbilang,0,0,'L',true );
+	    $pdfInv->SetFillColor(145,145,145);
+	    $pdfInv->Cell($full_row_width, 5,'   '.$terbilang,0,0,'L',true );
 
 
-	    $pdfTiket->Ln(8);
-	    $y_for_decetak_oleh = $pdfTiket->GetY();
-	    $pdfTiket->SetFont('Arial', null, 6);
-	    $pdfTiket->SetTextColor(0,0,0);
-	    $pdfTiket->Ln($table_row_height);
-	    // $pdfTiket->Cell(10, 0,null,0,0,'C',false );
+	    $pdfInv->Ln(8);
+	    $y_for_decetak_oleh = $pdfInv->GetY();
+	    $pdfInv->SetFont('Arial', null, 6);
+	    $pdfInv->SetTextColor(0,0,0);
+	    $pdfInv->Ln($table_row_height);
+	    // $pdfInv->Cell(10, 0,null,0,0,'C',false );
 	    $catatan_1 = \DB::table('appsetting')->whereName('inv_catatan_1')->first()->value;
 	    $catatan_2 = \DB::table('appsetting')->whereName('inv_catatan_2')->first()->value;
 	    $catatan_3 = \DB::table('appsetting')->whereName('inv_catatan_3')->first()->value;
@@ -922,78 +924,79 @@ public function cetakInvoice($invoice_id){
 	    $catatan_6 = \DB::table('appsetting')->whereName('inv_catatan_6')->first()->value;
 	    $catatan_7 = \DB::table('appsetting')->whereName('inv_catatan_7')->first()->value;
 
-	    $pdfTiket->SetXY(7,$y_for_decetak_oleh+5);
-	    $pdfTiket->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_1,0,0,'L',false );
+	    $pdfInv->SetXY(7,$y_for_decetak_oleh+5);
+	    $pdfInv->SetFont('Arial', 'BU', 6);
+	    $pdfInv->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_1,0,0,'L',false );
 
 		    // tanda tangan baris ke 1
-		    $pdfTiket->SetFont('Arial', null, 8);
-		    $pdfTiket->SetTextColor(0,0,0);
-		    $x = $pdfTiket->GetX();
-		    $pdfTiket->SetXY($x,$y_for_decetak_oleh);
-			// $pdfTiket->Cell($width_nama + 1, $table_row_height,null,0,0,'L',false );	  
-			$pdfTiket->SetX($pdfTiket->GetPageWidth()/2);    
-			$pdfTiket->Cell($pdfTiket->GetPageWidth()/2-7, $table_row_height,'Dicetak oleh,',0,0,'R',false );		    
-			$pdfTiket->SetFont('Arial', null, 6);
-		    $pdfTiket->SetTextColor(0,0,0);
-	    	$pdfTiket->SetXY(7,$y_for_decetak_oleh+5);
+		    $pdfInv->SetFont('Arial', null, 8);
+		    $pdfInv->SetTextColor(0,0,0);
+		    $x = $pdfInv->GetX();
+		    $pdfInv->SetXY($x,$y_for_decetak_oleh);
+			// $pdfInv->Cell($width_nama + 1, $table_row_height,null,0,0,'L',false );	  
+			$pdfInv->SetX($pdfInv->GetPageWidth()/2);    
+			$pdfInv->Cell($pdfInv->GetPageWidth()/2-7, $table_row_height,'Dicetak oleh,',0,0,'R',false );		    
+			$pdfInv->SetFont('Arial', null, 6);
+		    $pdfInv->SetTextColor(0,0,0);
+	    	$pdfInv->SetXY(7,$y_for_decetak_oleh+5);
 
 
-	    $pdfTiket->Ln(3);
-	    $pdfTiket->SetX(7);
-	    // $pdfTiket->Cell(10, 0,null,0,0,'C',false );
-	    $pdfTiket->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_2,0,0,'L',false );
+	    $pdfInv->Ln(3);
+	    $pdfInv->SetX(7);
+	    // $pdfInv->Cell(10, 0,null,0,0,'C',false );
+	    $pdfInv->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_2,0,0,'L',false );
 	   
-	    $pdfTiket->Ln(3);
-	    $pdfTiket->SetX(7);
-	    // $pdfTiket->Cell(10, 0,null,0,0,'C',false );
-	    $pdfTiket->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_3,0,0,'L',false );
+	    $pdfInv->Ln(3);
+	    $pdfInv->SetX(7);
+	    // $pdfInv->Cell(10, 0,null,0,0,'C',false );
+	    $pdfInv->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_3,0,0,'L',false );
 
-	    $pdfTiket->Ln(3);
-	    $pdfTiket->SetX(7);
-	    // $pdfTiket->Cell(10, 0,null,0,0,'C',false );
-	    $pdfTiket->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_4,0,0,'L',false );
+	    $pdfInv->Ln(3);
+	    $pdfInv->SetX(7);
+	    // $pdfInv->Cell(10, 0,null,0,0,'C',false );
+	    $pdfInv->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_4,0,0,'L',false );
 
-	    $pdfTiket->Ln(3);
-	    $pdfTiket->SetX(7);
-	    // $pdfTiket->Cell(10, 0,null,0,0,'C',false );
-	    $pdfTiket->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_5,0,0,'L',false );
+	    $pdfInv->Ln(3);
+	    $pdfInv->SetX(7);
+	    // $pdfInv->Cell(10, 0,null,0,0,'C',false );
+	    $pdfInv->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_5,0,0,'L',false );
 
 		    
 
-	    $pdfTiket->Ln(3);
-	    $pdfTiket->SetX(7);
-	    // $pdfTiket->Cell(10, 0,null,0,0,'C',false );
-	    $pdfTiket->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_6,0,0,'L',false );
+	    $pdfInv->Ln(3);
+	    $pdfInv->SetX(7);
+	    // $pdfInv->Cell(10, 0,null,0,0,'C',false );
+	    $pdfInv->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_6,0,0,'L',false );
 
 		    // tanda tangan baris ke 2
-		    $pdfTiket->SetFont('Arial', 'B', 8);
-		    $pdfTiket->SetTextColor(0,0,0);
-			// $pdfTiket->Cell($width_nama + 1, $table_row_height,null,0,0,'L',false );
-			$pdfTiket->SetX($pdfTiket->GetPageWidth()/2);    
-			$pdfTiket->Cell($pdfTiket->GetPageWidth()/2-7, $table_row_height,\DB::table('users')->find($data_invoice->user_id)->name,0,0,'R',false );
-			$pdfTiket->SetFont('Arial', null, 6);
-		    $pdfTiket->SetTextColor(0,0,0);
+		    $pdfInv->SetFont('Arial', 'B', 8);
+		    $pdfInv->SetTextColor(0,0,0);
+			// $pdfInv->Cell($width_nama + 1, $table_row_height,null,0,0,'L',false );
+			$pdfInv->SetX($pdfInv->GetPageWidth()/2);    
+			$pdfInv->Cell($pdfInv->GetPageWidth()/2-7, $table_row_height,\DB::table('users')->find($data_invoice->user_id)->name,0,0,'R',false );
+			$pdfInv->SetFont('Arial', null, 6);
+		    $pdfInv->SetTextColor(0,0,0);
 
-	    $pdfTiket->Ln(3);
-	    $pdfTiket->SetX(7);
-	    // $pdfTiket->Cell(10, 0,null,0,0,'C',false );
-	    $pdfTiket->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_7,0,0,'L',false );
+	    $pdfInv->Ln(3);
+	    $pdfInv->SetX(7);
+	    // $pdfInv->Cell(10, 0,null,0,0,'C',false );
+	    $pdfInv->MultiAlignCell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + $width_titel + $width_nama + 5, $table_row_height,$catatan_7,0,0,'L',false );
 
 	    	// tanda tangan baris ke 3
-		    $pdfTiket->SetFont('Arial', null, 8);
-		    $pdfTiket->SetTextColor(0,0,0);
-			// $pdfTiket->Cell($width_nama + 1, $table_row_height,null,0,0,'L',false );
-			$pdfTiket->SetX($pdfTiket->GetPageWidth()/2);    
-			$pdfTiket->Cell($pdfTiket->GetPageWidth()/2-7, $table_row_height,$company_name,0,0,'R',false );
-			$pdfTiket->SetFont('Arial', null, 6);
-		    $pdfTiket->SetTextColor(0,0,0);
+		    $pdfInv->SetFont('Arial', null, 8);
+		    $pdfInv->SetTextColor(0,0,0);
+			// $pdfInv->Cell($width_nama + 1, $table_row_height,null,0,0,'L',false );
+			$pdfInv->SetX($pdfInv->GetPageWidth()/2);    
+			$pdfInv->Cell($pdfInv->GetPageWidth()/2-7, $table_row_height,$company_name,0,0,'R',false );
+			$pdfInv->SetFont('Arial', null, 6);
+		    $pdfInv->SetTextColor(0,0,0);
 
-	    // $pdfTiket->Ln(3);
-	    // $pdfTiket->Cell(10, 0,null,0,0,'C',false );
+	    // $pdfInv->Ln(3);
+	    // $pdfInv->Cell(10, 0,null,0,0,'C',false );
 
 	    
-	    // $pdfTiket->Output('I',$data_invoice->inv_num .'_'.date('dmYHis') .'.pdf',false);
-	    $pdfTiket->Output('I',$data_invoice->inv_num  .'.pdf',false);
+	    // $pdfInv->Output('I',$data_invoice->inv_num .'_'.date('dmYHis') .'.pdf',false);
+	    $pdfInv->Output('I',$data_invoice->inv_num  .'.pdf',false);
 	    exit;
 	}
 

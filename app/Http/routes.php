@@ -53,6 +53,10 @@ Route::post('login',function(){
 Route::group(['middleware' => ['web','auth']], function () {
 	 Route::get('home','HomeController@index');
 
+     // PROFILE
+    Route::get('profile','ProfileController@index');
+    Route::post('profile/update','ProfileController@update');
+
      Route::group(['prefix' => 'master'], function () {
 
         // MASTER MASKAPAI
@@ -170,6 +174,8 @@ Route::group(['middleware' => ['web','auth']], function () {
         Route::get('user/create','UserController@create');
         Route::post('user/insert','UserController@insert');
         Route::post('user/delete','UserController@delete');
+
+        
 
     });
 

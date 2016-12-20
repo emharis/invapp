@@ -101,7 +101,14 @@
                                 {{$dt->total}}
                             </td>
                             <td class="text-center" >
-                                <a class="btn btn-primary btn-xs" data-toggle="tooltip" title="Edit" href="invoice/tiket/edit/{{$dt->id}}" ><i class="fa fa-edit" ></i></a>
+                                @if(Auth::user()->username == 'admin')
+                                      <a class="btn btn-primary btn-xs" data-toggle="tooltip" title="Edit" href="invoice/tiket/edit/{{$dt->id}}" ><i class="fa fa-edit" ></i></a>
+                                @else
+                                    @if( $dt->user_id == Auth::user()->id)
+                                        <a class="btn btn-primary btn-xs" data-toggle="tooltip" title="Edit" href="invoice/tiket/edit/{{$dt->id}}" ><i class="fa fa-edit" ></i></a>
+                                    @endif
+                                @endif
+
                                 
                                 <a class="btn btn-success btn-xs" target="_blank" data-toggle="tooltip" title="Cetak Invoice" href="invoice/tiket/cetak-tiket/{{$dt->id}}" ><i class="fa fa-file-text-o" ></i></a>
                                 <a class="btn btn-warning btn-xs" target="_blank" data-toggle="tooltip" title="Cetak Kwitansi" href="invoice/tiket/cetak-kwitansi/{{$dt->id}}" ><i class="fa fa-file-text-o" ></i></a>
@@ -182,7 +189,7 @@
 
     // Delete Data Lokasi
     $('#btn-delete').click(function(e){
-        if(confirm('Anda akan menhapus data ini?')){
+        if(confirm('Anda akan menghapus data ini?')){
             var dataid = [];
             $('input.ck_row:checked').each(function(i){
                 var data_id = $(this).parent().parent().data('id');
