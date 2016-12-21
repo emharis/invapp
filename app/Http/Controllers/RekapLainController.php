@@ -489,7 +489,7 @@ class RekapLainController extends Controller
         // TOTAL
 	    $subtotal_height = 10;
 	    $pdfOpt->SetFont('Arial', 'B', 12);
-	    $pdfOpt->Ln($col_height);	    
+	    $pdfOpt->Ln(5);	    
 	    $pdfOpt->SetX(0);
 	    $pdfOpt->SetX( 8 + $width_no + $width_separator + $width_nomor_invoice + $width_separator  + $width_separator + $width_tanggal_cetak + $width_separator + $width_keterangan + $width_separator );
 	    $pdfOpt->SetFillColor(4,82,127);
@@ -504,7 +504,7 @@ class RekapLainController extends Controller
 	    $pdfOpt->SetFont('Arial', 'B', 8);
 	    $pdfOpt->SetTextColor(255,255,255);
 	    $terbilang =  strtoupper(convertTerbilang($subtotal_harga) . ' Rupiah');
-	    $pdfOpt->SetFillColor(145,145,145);
+	    $pdfOpt->SetFillColor(0,0,0);
 	    $pdfOpt->Cell($pdfOpt->GetPageWidth()-16, 5,'   '.$terbilang,0,0,'L',true );
 	    // END OF TERBILANG
 

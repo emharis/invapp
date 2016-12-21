@@ -456,11 +456,11 @@ class InvoiceLainController extends Controller
 		    
 	    }
 
+	    // TOTAL
+	    $pdfInv->Ln(5);
 	    $pdfInv->SetX(8);
 	    $total_height = 10;
 	    $pdfInv->SetFont('Arial', 'B', 12);	    
-	    $pdfInv->Cell($width_separator, $total_height,null,0,2,'C',false );
-	    $pdfInv->Cell($width_separator, $total_height,null,0,0,'C',false );
 	    $pdfInv->SetFillColor(4,82,127);
 	    $pdfInv->SetTextColor(255,255,255);
 	    $pdfInv->SetX(125);
@@ -469,13 +469,13 @@ class InvoiceLainController extends Controller
 
 	    // terbilang
 	    $pdfInv->Ln();
-	    $pdfInv->Ln(2);
+	    $pdfInv->Ln(5);
 	    $pdfInv->SetX(8);
 	    $pdfInv->SetFont('Arial', 'B', 8);
 	    $pdfInv->SetTextColor(255,255,255);
 	    // $pdfInv->Cell(10, 0,null,0,0,'C',false );
 	    $terbilang =  strtoupper($data_invoice->terbilang . ' Rupiah');
-	    $pdfInv->SetFillColor(145,145,145);
+	    $pdfInv->SetFillColor(0,0,0);
 	    $pdfInv->Cell($full_row_width+2, 5,'   '.$terbilang,0,0,'L',true );
 
 

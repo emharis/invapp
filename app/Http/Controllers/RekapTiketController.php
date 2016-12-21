@@ -655,7 +655,7 @@ class RekapTiketController extends Controller
 	    $pdfOpt->SetFont('Arial', 'B', 8);
 	    $pdfOpt->SetTextColor(255,255,255);
 	    $terbilang =  strtoupper(convertTerbilang($total_harga) . ' Rupiah');
-	    $pdfOpt->SetFillColor(145,145,145);
+	    $pdfOpt->SetFillColor(0,0,0);
 	    $pdfOpt->Cell($pdfOpt->GetPageWidth()-16, 5,'   '.$terbilang,0,0,'L',true );
 	    // END OF TERBILANG
 

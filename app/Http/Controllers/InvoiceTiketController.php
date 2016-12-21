@@ -888,7 +888,7 @@ public function cetakInvoice($invoice_id){
 	    $total_height = 10;
 	    // $pdfInv->Cell($width_separator, $total_height,null,0,2,'C',false );
 	    // $pdfInv->Cell($width_separator, $table_row_height,null,0,2,'C',false );
-	    $pdfInv->Ln(3);
+	    $pdfInv->Ln(5);
 	    $pdfInv->SetX(8);
 	    // $pdfInv->Cell($width_separator, $total_height,null,0,0,'C',false );
 	    $pdfInv->Cell($width_no + $width_kode_pemesanan + $width_maskapai + $width_rute + ($width_separator*4), $total_height,null,0,0,'C',false );
@@ -900,13 +900,13 @@ public function cetakInvoice($invoice_id){
 
 	    // terbilang
 	    $pdfInv->Ln();
-	    $pdfInv->Ln(2);
+	    $pdfInv->Ln(5);
 	    $pdfInv->SetX(8);
 	    $pdfInv->SetFont('Arial', 'B', 8);
 	    $pdfInv->SetTextColor(255,255,255);
 	    // $pdfInv->Cell(10, 0,null,0,0,'C',false );
 	    $terbilang =  strtoupper($data_invoice->terbilang . ' Rupiah');
-	    $pdfInv->SetFillColor(145,145,145);
+	    $pdfInv->SetFillColor(0,0,0);
 	    $pdfInv->Cell($full_row_width, 5,'   '.$terbilang,0,0,'L',true );
 
 

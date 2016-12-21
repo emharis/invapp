@@ -279,7 +279,7 @@ class RekapHotelController extends Controller
 	    $pdfOpt->Cell(30,5,'KETERANGAN',0,0,'L',false);
 	    $pdfOpt->Cell(2,5,':',0,0,'L',false);
 	    $pdfOpt->SetFont('Arial', null, 8);
-	    $pdfOpt->Cell($pdfOpt->GetPageWidth()/2-8-32,5, 'REKAPITULASI DATA PEMESANAN TIKET',0,0,'L',false);
+	    $pdfOpt->Cell($pdfOpt->GetPageWidth()/2-8-32,5, 'REKAPITULASI DATA PEMESANAN HOTEL',0,0,'L',false);
 
 	    // $pdfOpt->SetX(8);
 	    $pdfOpt->SetFont('Arial', 'B', 8);
@@ -655,7 +655,7 @@ class RekapHotelController extends Controller
         // TOTAL
 	    $total_height = 10;
 	    $pdfOpt->SetFont('Arial', 'B', 12);
-	    $pdfOpt->Ln($col_height);	    
+	    $pdfOpt->Ln(5);	    
 	    // $pdfOpt->Cell($width_separator, $total_height,null,0,2,'C',false );
 	    // $pdfTiket->Cell($width_separator, $table_row_height,null,0,2,'C',false );
 
@@ -673,7 +673,7 @@ class RekapHotelController extends Controller
 	    $pdfOpt->SetFont('Arial', 'B', 8);
 	    $pdfOpt->SetTextColor(255,255,255);
 	    $terbilang =  strtoupper(convertTerbilang($total_harga) . ' Rupiah');
-	    $pdfOpt->SetFillColor(145,145,145);
+	    $pdfOpt->SetFillColor(0,0,0);
 	    $pdfOpt->Cell($pdfOpt->GetPageWidth()-16, 5,'   '.$terbilang,0,0,'L',true );
 	    // END OF TERBILANG
 
